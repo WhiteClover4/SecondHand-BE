@@ -1,19 +1,7 @@
-const express = require('express');
-const router = express.Router();
+const express          = require('express');
+const router           = express.Router();
+const userRoutes       = require('./user.route');
 
-// Homepage
-router.get('/', (req, res) => {
-    res.status(200).json({
-        status: "Success",
-        message: "Hello World!!!"
-    });
-});
-
-
-// Authentication
-
-
-// Authentication Middleware
-
+router.use('/user', userRoutes);
 
 module.exports = router;
