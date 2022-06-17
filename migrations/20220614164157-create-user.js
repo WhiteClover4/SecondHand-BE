@@ -20,8 +20,8 @@ module.exports = {
       otp: {
         type: Sequelize.STRING
       },
-      city_id: {
-        type: Sequelize.INTEGER
+      city: {
+        type: Sequelize.STRING
       },
       address: {
         type: Sequelize.STRING

@@ -12,7 +12,7 @@ const getAllUsers = async (req, res) => {
         // page -= 1;
 
         const options = {
-            attributes: ['id', 'name', 'email', 'password', 'city_id', 'address', 'phone_number', 'role_id', 'profile_picture' ],
+            attributes: ['id', 'name', 'email', 'password', 'city', 'address', 'phone_number', 'role_id', 'profile_picture' ],
             // offset: page,
             // limit: row,
         };
@@ -32,21 +32,23 @@ const getAllUsers = async (req, res) => {
 }
 
 const register = async (req, res) => {
-    const { name, email, password, city_id, address, phone_number, role_id, profile_picture } = req.body;
-    const createdUser = await User.create({
-        name: name,
-        email: email,
-        password: password,
-        city_id: city_id,
-        address: address,
-        phone_number: phone_number,
-        role_id: role_id,
-        profile_picture: profile_picture
-    });
-    return res.status(201).json({
-        status: 'User created successfully',
-        data: createdUser
-    });
+    try {
+        const { name, email, password, city, address, phone_number, role_id, profile_picture } = req.body;
+        const createdUser = await User.create({
+            name: name,
+            email: email,
+            password: password
+        });
+        return res.status(201).json({
+            status: 'User created successfully',
+            data: createdUser
+        });
+    } catch (error) {
+        return res.status(500).json({
+            status: 'error',
+            message: err.message
+          }) 
+    }
 };
   
   const login = async (req, res) => {
@@ -61,7 +63,7 @@ const register = async (req, res) => {
       const payload = {
         name: foundUser.name,
         email: foundUser.email,
-        city_id: foundUser.city_id,
+        city: foundUser.city,
         address: foundUser.address,
         phone_number: foundUser.phone_number,
         role_id: foundUser.role_id
@@ -167,7 +169,7 @@ const PasswordOTP = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-      const {name, city_id, address, phone_number, profile_picture} = req.body;
+      const {name, city, address, phone_number, profile_picture} = req.body;
       let id = req.params.id;
       if(!( await User.findByPk(id))) return res.status(404).json({
         status:"Error",
@@ -176,7 +178,7 @@ const updateUser = async (req, res) => {
       
       const updatedUser = await User.update({
           name: name,
-          city_id: city_id,
+          city: city,
           address: address,
           phone_number: phone_number,
           profile_picture: profile_picture

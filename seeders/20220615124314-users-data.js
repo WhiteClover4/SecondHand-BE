@@ -8,7 +8,7 @@ module.exports = {
         name: eachUserData.name,
         email: eachUserData.email,
         password: eachUserData.password,
-        city_id: eachUserData.city_id,
+        city: eachUserData.city,
         address: eachUserData.address,
         phone_number: eachUserData.phone_number,
         role_id: eachUserData.role,
