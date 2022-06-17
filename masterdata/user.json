@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Nely Dwi A",
+        "email": "nenda@gmail.com",
+        "password": "1",
+        "city_id": 1,
+        "address": "tanjung",
+        "phone_number": "087654321897",
+        "role_id": 1
+    },
+    {
+        "name": "Nur Rini Riani",
+        "email": "nur@gmail.com",
+        "password": "2",
+        "city_id": 102,
+        "address": "kringan",
+        "phone_number": "089532132175",
+        "role_id": 2
+    }
+]
