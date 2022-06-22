@@ -1,17 +1,17 @@
 [
     {
-        "title": "Hobi"
+        "name": "Hobi"
     },
     {
-        "title": "Kendaraan"
+        "name": "Kendaraan"
     },
     {
-        "title": "Baju"
+        "name": "Baju"
     },
     {
-        "title": "Elektronik"
+        "name": "Elektronik"
     },
     {
-        "title": "Kesehatan"
+        "name": "Kesehatan"
     }
 ]
