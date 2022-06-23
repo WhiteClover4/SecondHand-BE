@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Susu Peninggi Badan",
+        "description": "Lorem",
+        "price": 125000,
+        "status": "DRAFT",
+        "category_id": 1,
+        "isPublished": true
+    },
+    {
+        "name": "GLOWING SUN",
+        "description": "Lorem",
+        "price": 50000,
+        "status": "REJECTED",
+        "category_id": 4,
+        "isPublished": false
+    }
+]
