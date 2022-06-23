@@ -13,10 +13,10 @@ passport.use(
         id: jwt_payload.id,
         name: jwt_payload.name,
         email: jwt_payload.email,
-        city_id: jwt_payload.city_id,
+        city: jwt_payload.city,
         address: jwt_payload.address,
         phone_number: jwt_payload.phone_number,
-        role: jwt_payload.role
+        role_id: jwt_payload.role_id
       }
     })
       .then((User) => done(null, User))
