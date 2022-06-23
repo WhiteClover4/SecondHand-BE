@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=100000",
+    "start": "node ./bin/www",
+    "start-local": "nodemon ./bin/www",
+    "test": "cross-env NODE_ENV=test jest controller.spec.js --testTimeout=1000000",
     "pretest": "cross-env NODE_ENV=test npm run db:reset",
     "db:reset": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all",
     "db:create:test": "cross-env NODE_ENV=test sequelize db:create"

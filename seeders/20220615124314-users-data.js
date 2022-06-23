@@ -1,5 +1,7 @@
 'use strict';
 const usersData = require('../masterdata/user.json');
+const bcrypt               = require('bcrypt');
+const { SALT_ROUNDS }      = process.env;
 
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -7,7 +9,7 @@ module.exports = {
       return {
         name: eachUserData.name,
         email: eachUserData.email,
-        password: eachUserData.password,
+        password: bcrypt.hashSync(eachUserData.password, +process.env.SALT_ROUNDS),
         city: eachUserData.city,
         address: eachUserData.address,
         phone_number: eachUserData.phone_number,
