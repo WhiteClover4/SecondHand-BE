@@ -4,8 +4,7 @@
     "password": "nelydwia18",
     "database": "secondHand",
     "host": "127.0.0.1",
-    "dialect": "postgres",
-    "port": "5433"
+    "dialect": "postgres"
 },
 "test": {
     "username": "postgres",

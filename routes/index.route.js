@@ -1,8 +1,9 @@
-const express          = require('express');
-const router           = express.Router();
-const userRoutes       = require('./user.route');
-const productRoutes    = require('./product.route');
-const authController   = require('../controllers/auth.controller');
+const express               = require('express');
+const router                = express.Router();
+const userRoutes            = require('./user.route');
+const productRoutes         = require('./product.route');
+const productImageRoutes    = require('./productImage.route');
+const authController        = require('../controllers/auth.controller');
 const { createValidationFor, checkValidationResult } = require('../misc/validator');
 
 
@@ -17,5 +18,6 @@ router.post('/forget-password', createValidationFor('forget-password'), checkVal
 router.post('/reset-password', authController.resetPassword);
 router.use('/user', userRoutes);
 router.use('/product', productRoutes);
+router.use('/productImage', productImageRoutes);
 
 module.exports = router;
