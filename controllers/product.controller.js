@@ -18,7 +18,7 @@ const getAllProducts = async (req, res) => {
             status: 'success',
             result: allProducts,
         });
-    } catch (error) {
+    } catch (err) {
         return res.status(500).json({
           status: 'error',
           message: err.message
@@ -31,7 +31,7 @@ const getProductById = async (req, res) => {
 
     if (!foundProduct) {
         return res.status(404).json({
-          message: `Staff dengan id ${req.params.id} tidak ditemukan`
+          message: `Product dengan id ${req.params.id} tidak ditemukan`
         })
     }
     res.status(200).json({
