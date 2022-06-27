@@ -24,7 +24,8 @@ const getAllProductImages = async (req, res) => {
 
         return res.status(200).json({
             status: 'success',
-            result: allProductImages,
+            message: 'Semua gambar ditampilkan',
+            data: allProductImages,
         });
     } catch (error) {
         return res.status(500).json({
@@ -44,7 +45,8 @@ const getProductImageById = async (req, res) => {
     }
     res.status(200).json({
         status: 'success',
-        result: foundProductImage
+        message: 'Gambar produk ditemukan',
+        data: foundProductImage
     })
 }
 
@@ -58,7 +60,8 @@ const createProductImage = async (req, res) => {
         });
         res.status(201).json({
             status: 'success',
-            result: createdProductImage
+            message: 'Gambar produk berhasil ditambahkan',
+            data: createdProductImage
         });
     } catch (error) {
         return res.status(500).json({
@@ -87,7 +90,8 @@ const updateProductImage = async (req, res) => {
       }
       res.status(200).json({ 
           status: 'success',
-          result: updatedProductImage[1]
+          message: 'Produk berhasil diubah',
+          data: updatedProductImage[1]
       })
   } catch(err){
     return res.status(500).json({
@@ -111,7 +115,7 @@ const deleteProductImage = async (req, res) => {
       }
       res.status(200).json({ 
           status: 'success',
-          message: 'Yosha'
+          message: 'Gambar produk berhasil dihapus'
       })
   } catch(err){
     return res.status(500).json({

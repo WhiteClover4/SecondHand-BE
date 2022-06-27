@@ -2,21 +2,28 @@ const { Product } = require('../models');
 
 const getAllProducts = async (req, res) => {
     try {
-        // let { page, row } = req.query;
-
-        // page -= 1;
-
         const options = {
             attributes: ['id', 'name', 'description', 'price', 'status', 'category_id', 'isPublished'],
-            // offset: page,
-            // limit: row,
         };
+        
+        if(req.query) {
+            let { page, row } = req.query;
+    
+            let pages = ((page - 1) * row);
+    
+    
+            if (page && row) {
+                options.offset = pages;
+                options.limit = row;
+            }
+        }
 
         const allProducts = await Product.findAll(options);
 
         res.status(200).json({
             status: 'success',
-            result: allProducts,
+            message: 'Semua produk ditampilkan', 
+            data: allProducts,
         });
     } catch (err) {
         return res.status(500).json({
@@ -36,7 +43,8 @@ const getProductById = async (req, res) => {
     }
     res.status(200).json({
         status: 'success',
-        result: foundProduct
+        message: 'Produk Ditemukan',
+        data: foundProduct
     })
 }
 
@@ -54,7 +62,8 @@ const createProduct = async (req, res) => {
         });
         res.status(201).json({
             status: 'success',
-            result: createdProduct
+            message: 'Produk berhasil ditambahkan',
+            data: createdProduct
         });
     } catch (error) {
         return res.status(500).json({
@@ -87,7 +96,8 @@ const updateProduct = async (req, res) => {
       }
       res.status(200).json({ 
           status: 'success',
-          result: updatedProduct[1]
+          message: 'Produk berhasil diubah',
+          data: updatedProduct[1]
       })
   } catch(err){
     return res.status(500).json({
@@ -111,7 +121,7 @@ const deleteProduct = async (req, res) => {
       }
       res.status(200).json({ 
           status: 'success',
-          message: 'Yosha'
+          message: 'Produk berhasil dihapus'
       })
   } catch(err){
     return res.status(500).json({
