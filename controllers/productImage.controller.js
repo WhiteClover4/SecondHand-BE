@@ -24,13 +24,13 @@ const getAllProductImages = async (req, res) => {
 
         return res.status(200).json({
             status: 'success',
-            message: 'Semua gambar ditampilkan',
+            msg: 'Semua gambar ditampilkan',
             data: allProductImages,
         });
     } catch (error) {
         return res.status(500).json({
           status: 'error',
-          message: error.message
+          msg: error.message
         }) 
     }
 }
@@ -40,12 +40,12 @@ const getProductImageById = async (req, res) => {
 
     if (!foundProductImage) {
         return res.status(404).json({
-          message: `ProductImage dengan id ${req.params.id} tidak ditemukan`
+          msg: `ProductImage dengan id ${req.params.id} tidak ditemukan`
         })
     }
     res.status(200).json({
         status: 'success',
-        message: 'Gambar produk ditemukan',
+        msg: 'Gambar produk ditemukan',
         data: foundProductImage
     })
 }
@@ -60,13 +60,13 @@ const createProductImage = async (req, res) => {
         });
         res.status(201).json({
             status: 'success',
-            message: 'Gambar produk berhasil ditambahkan',
+            msg: 'Gambar produk berhasil ditambahkan',
             data: createdProductImage
         });
     } catch (error) {
         return res.status(500).json({
           status: 'error',
-          message: error.message
+          msg: error.message
         })
     }
 }
@@ -85,18 +85,18 @@ const updateProductImage = async (req, res) => {
       });
       if (!updatedProductImage[0]) {
         return res.status(404).json({
-          message: `ProductImage dengan id ${req.params.id} tidak ditemukan`
+          msg: `ProductImage dengan id ${req.params.id} tidak ditemukan`
       })
       }
       res.status(200).json({ 
           status: 'success',
-          message: 'Produk berhasil diubah',
+          msg: 'Produk berhasil diubah',
           data: updatedProductImage[1]
       })
   } catch(err){
     return res.status(500).json({
       status: 'error',
-      message: err.message
+      msg: err.msg
     })
   }
 }
@@ -110,17 +110,17 @@ const deleteProductImage = async (req, res) => {
       });
       if (!deletedProductImage) {
         return res.status(404).json({
-          message: `ProductImage dengan id ${req.params.id} tidak ditemukan`
+          msg: `ProductImage dengan id ${req.params.id} tidak ditemukan`
       })
       }
       res.status(200).json({ 
           status: 'success',
-          message: 'Gambar produk berhasil dihapus'
+          msg: 'Gambar produk berhasil dihapus'
       })
   } catch(err){
     return res.status(500).json({
       status: 'error',
-      message: err.message
+      msg: err.msg
     })
   }
 }

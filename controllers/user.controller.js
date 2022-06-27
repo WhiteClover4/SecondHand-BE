@@ -24,13 +24,13 @@ const getAllUsers = async (req, res) => {
 
         return res.status(200).json({
             status: 'success',
-            message: 'Semua user ditampilkan',
+            msg: 'Semua user ditampilkan',
             data: allUsers,
         });
     } catch (error) {
         return res.status(500).json({
           status: 'error',
-          message: err.message
+          msg: err.message
         }) 
     }
 }
@@ -40,13 +40,13 @@ const getUserData = async (req, res) => {
         console.log(req);
         return res.status(200).json({
             status: "success",
-            message: "User berhasil ditemukan",
+            msg: "User berhasil ditemukan",
             data: req.user
         })
     } catch (err) {
         return res.status(500).json({
             status: 'error',
-            message: err.message
+            msg: err.message
           }) 
     }
 }
@@ -57,7 +57,7 @@ const updateUser = async (req, res) => {
       let id = req.params.id;
       if(!( await User.findByPk(id))) return res.status(404).json({
         status:"Error",
-        message:"User not found!"
+        msg:"User not found!"
       });
       
       const updatedUser = await User.update({
@@ -74,13 +74,13 @@ const updateUser = async (req, res) => {
 
       res.status(201).json({
           status: "Success",
-          message: "Data updated successfully",
+          msg: "Data updated successfully",
           data: updatedUser[1]
       });
   } catch (error) {
       res.status(400).json({
           status: "Error",
-          message: "Update data failed!",
+          msg: "Update data failed!",
           error: error
       });
   }
@@ -95,17 +95,17 @@ const deleteUser = async (req, res) => {
       });
       if (!deletedUser) {
         return res.status(404).json({
-          message: `User dengan id ${req.params.id} tidak ditemukan`
+          msg: `User dengan id ${req.params.id} tidak ditemukan`
       })
       }
       res.status(200).json({ 
           status: 'success',
-          message: 'User berhasil dihapus'
+          msg: 'User berhasil dihapus'
       })
   } catch(err){
     return res.status(500).json({
       status: 'error',
-      message: err.message
+      msg: err.message
     })
   }
 }
