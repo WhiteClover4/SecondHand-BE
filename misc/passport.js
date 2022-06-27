@@ -9,15 +9,10 @@ passport.use(
   new JwtStrategy(opts, async (jwt_payload, done) => {
     console.log(jwt_payload);
     User.findOne({
-      where: {
-        id: jwt_payload.id,
-        name: jwt_payload.name,
-        email: jwt_payload.email,
-        city: jwt_payload.city,
-        address: jwt_payload.address,
-        phone_number: jwt_payload.phone_number,
-        role_id: jwt_payload.role_id
-      }
+        attributes: ['name', 'email', 'city', 'address', 'phone_number', 'profile_picture'],
+        where: {
+            id: jwt_payload.id,
+        }
     })
       .then((User) => done(null, User))
       .catch((err) => done(err, false));

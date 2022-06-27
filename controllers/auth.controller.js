@@ -12,6 +12,7 @@ const register = async (req, res) => {
             name: name,
             email: email,
             password: password,
+            role_id: 1,
             profile_picture: "https://www.kindpng.com/picc/m/21-214439_free-high-quality-person-icon-default-profile-picture.png"
         });
         const emailRes = await sendEmail(email, name);

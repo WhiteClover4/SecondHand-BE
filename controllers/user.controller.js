@@ -35,7 +35,21 @@ const getAllUsers = async (req, res) => {
     }
 }
 
-
+const getUserData = async (req, res) => {
+    try {
+        console.log(req);
+        return res.status(200).json({
+            status: "success",
+            message: "User berhasil ditemukan",
+            data: req.user
+        })
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            message: err.message
+          }) 
+    }
+}
 
 const updateUser = async (req, res) => {
   try {
@@ -98,6 +112,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     getAllUsers,
+    getUserData,
     updateUser,
     deleteUser
   }
