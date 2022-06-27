@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "postgres",
-    "password": "nelydwia18",
+    "password": "1",
     "database": "secondHand",
     "host": "127.0.0.1",
     "dialect": "postgres"
@@ -19,6 +19,13 @@
     "password": "2a12df3d75f7a55d4f087e2c562ab757a3ed9c696c71d4425dab122b78371a86",
     "database": "d5o5j3ql0l4uv0",
     "host": "ec2-3-224-8-189.compute-1.amazonaws.com",
-    "dialect": "postgres"
+    "url": "postgres://oyqfdpsfykotsq:2a12df3d75f7a55d4f087e2c562ab757a3ed9c696c71d4425dab122b78371a86@ec2-3-224-8-189.compute-1.amazonaws.com:5432/d5o5j3ql0l4uv0",
+    "dialect": "postgres",
+    "dialectOptions": {
+        "ssl": {
+          "require": true,
+          "rejectUnauthorized": false
+        }
+      }
   }
 }
