@@ -4,12 +4,11 @@ const userRoutes            = require('./user.route');
 const productRoutes         = require('./product.route');
 const productImageRoutes    = require('./productImage.route');
 const authController        = require('../controllers/auth.controller');
+const homepageController    = require('../controllers/homepage.controller');
 const { createValidationFor, checkValidationResult } = require('../misc/validator');
 
 
-router.get('/', (req, res) => {
-    res.send("Hello World");
-});
+router.get('/', homepageController);
 
 router.post('/register', createValidationFor('register'), checkValidationResult, authController.register);
 router.post('/login', createValidationFor("login"), checkValidationResult, authController.login);
