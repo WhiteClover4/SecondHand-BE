@@ -24,7 +24,8 @@ const getAllUsers = async (req, res) => {
 
         return res.status(200).json({
             status: 'success',
-            result: allUsers,
+            message: 'Semua user ditampilkan',
+            data: allUsers,
         });
     } catch (error) {
         return res.status(500).json({
@@ -85,7 +86,7 @@ const deleteUser = async (req, res) => {
       }
       res.status(200).json({ 
           status: 'success',
-          message: 'Yosha'
+          message: 'User berhasil dihapus'
       })
   } catch(err){
     return res.status(500).json({

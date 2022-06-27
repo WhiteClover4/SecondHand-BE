@@ -16,7 +16,8 @@ const register = async (req, res) => {
         });
         const emailRes = await sendEmail(email, name);
         return res.status(201).json({
-            status: 'User created successfully',
+            status: 'success',
+            message: 'User created successfully',
             data: createdUser
         });
     } catch (err) {
@@ -49,6 +50,7 @@ const register = async (req, res) => {
         expiresIn: '1h'
       });
       return res.status(200).json({
+        message: "Login Success",
         token: token
       });
   };
