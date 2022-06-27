@@ -33,7 +33,7 @@ const userTest = () => {
                 .attach('profile_picture', testImage)
             expect(res.statusCode).toEqual(201);
             expect(res.body).toBeDefined();
-            expect(res.body.message).toEqual("Data updated successfully");
+            expect(res.body.msg).toEqual("Data updated successfully");
 
         });
 
@@ -49,7 +49,7 @@ const userTest = () => {
                 .attach('profile_picture', testImage)
             expect(res.statusCode).toEqual(404);
             expect(res.body).toBeDefined();
-            expect(res.body.message).toEqual("User not found!");
+            expect(res.body.msg).toEqual("User not found!");
         });
     });
 };

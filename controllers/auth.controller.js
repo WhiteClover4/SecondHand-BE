@@ -18,13 +18,13 @@ const register = async (req, res) => {
         const emailRes = await sendEmail(email, name);
         return res.status(201).json({
             status: 'success',
-            message: 'User created successfully',
+            msg: 'User created successfully',
             data: createdUser
         });
     } catch (err) {
         return res.status(500).json({
             status: 'error',
-            message: err.message
+            msg: err.message
           }) 
     }
 };
@@ -51,27 +51,27 @@ const register = async (req, res) => {
         expiresIn: '1h'
       });
       return res.status(200).json({
-        message: "Login Success",
+        msg: "Login Success",
         token: token
       });
   };
     return res.status(400).json({
       status: 'Failed',
-      message: 'Wrong email or password'
+      msg: 'Wrong email or password'
     });
 };
 
 const sendToEmail = async(req, res) => {
   try {
-      const {to, message} = req.body;
-      const emailRes = await sendEmail(to, message)
+      const {to, msg} = req.body;
+      const emailRes = await sendEmail(to, msg)
       return res.status(200).json({
-          message: `Successful email sent to ${emailRes.accepted.join(',').split(',')}`
+          msg: `Successful email sent to ${emailRes.accepted.join(',').split(',')}`
       })
   } catch (error) {
     return res.status(500).json({
       status: 'error',
-      message: error.message
+      msg: error.msg
     })
   }
 }
@@ -92,19 +92,19 @@ const forgetPassword = async (req, res) => {
       if (!updateEmail[0]) {
           return res.status(400).json({
               status: 'Error',
-              message: 'Email not found'
+              msg: 'Email not found'
           })
       }
-      const otpMessage = `OTP: ${otp}, please use this otp as your credential to retrieve the password. DON'T SHARE OTP!`
-      const emailRes = await sendOTP(email, otpMessage);
+      const otpmsg = `OTP: ${otp}, please use this otp as your credential to retrieve the password. DON'T SHARE OTP!`
+      const emailRes = await sendOTP(email, otpmsg);
 
       return res.status(200).json({
-          message: `OTP successfully sent to ${emailRes.accepted.join(',').split(',')}`
+          msg: `OTP successfully sent to ${emailRes.accepted.join(',').split(',')}`
       })
   } catch (error) {
     return res.status(500).json({
       status: 'error',
-      message: error.message
+      msg: error.msg
     })
   }
 };
@@ -119,7 +119,7 @@ const resetPassword = async (req, res) => {
                   email: email
               }
           });
-          if (!foundUser) throw { message: 'Email is not registered', status: 'Failed', code: 400 };
+          if (!foundUser) throw { msg: 'Email is not registered', status: 'Failed', code: 400 };
 
           const compareOtp = checkPassword(otp, foundUser.otp);
 
@@ -131,18 +131,18 @@ const resetPassword = async (req, res) => {
 
               return res.status(200).json({
                   status: 'Success',
-                  message: 'Password successfully changed'
+                  msg: 'Password successfully changed'
               });
           }
 
-          throw { message: 'Wrong OTP', status: 'Failed', code: 400 };
+          throw { msg: 'Wrong OTP', status: 'Failed', code: 400 };
       }
 
-      throw { message: `Password doesn't match`, status: 'Failed', code: 400 };
+      throw { msg: `Password doesn't match`, status: 'Failed', code: 400 };
   } catch (error) {
     return res.status(500).json({
       status: 'error',
-      message: error.message
+      msg: error.msg
     })
   }
 };
