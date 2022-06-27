@@ -46,7 +46,7 @@ const productTest = () => {
                 .set('Content-Type', 'application/json')
                 expect(res.statusCode).toEqual(404);
                 expect(res.body).toBeDefined();
-                expect(res.body.message).toEqual("Product dengan id 100 tidak ditemukan");
+                expect(res.body.msg).toEqual("Product dengan id 100 tidak ditemukan");
         });
 
         it('should create product', async () => {
@@ -202,7 +202,7 @@ const productTest = () => {
                 })
                 expect(res.statusCode).toEqual(404);
                 expect(res.body).toBeDefined();
-                expect(res.body.message).toEqual("Product dengan id 100 tidak ditemukan");
+                expect(res.body.msg).toEqual("Product dengan id 100 tidak ditemukan");
         });
 
         it('throw update product error, name cant be null', async () => {
@@ -324,7 +324,7 @@ const productTest = () => {
                 .set('Content-Type', 'application/json')
                 expect(res.statusCode).toEqual(404);
                 expect(res.body).toBeDefined();
-                expect(res.body.message).toEqual("Product dengan id 100 tidak ditemukan");
+                expect(res.body.msg).toEqual("Product dengan id 100 tidak ditemukan");
         });
     });
 };

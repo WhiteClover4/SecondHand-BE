@@ -16,18 +16,18 @@ app.use((err, req, res, next) => {
     if (err === 'App tidak lengkap') {
         res.status(400).json({
             status: 'Bad Request',
-            message: err
+            msg: err
         })
     } else if (err === `Gagal membuat App baru`) {
         res.status(400).json({
             status: 'Not Found',
-            message: err.message
+            msg: err.message
         });
     } 
     else {
         res.status(500).json({
             status: err.name,
-            message: err.message
+            msg: err.message
         });
     }
   

@@ -22,13 +22,13 @@ const getAllProducts = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            message: 'Semua produk ditampilkan', 
+            msg: 'Semua produk ditampilkan', 
             data: allProducts,
         });
     } catch (err) {
         return res.status(500).json({
           status: 'error',
-          message: err.message
+          msg: err.message
         }) 
     }
 }
@@ -38,12 +38,12 @@ const getProductById = async (req, res) => {
 
     if (!foundProduct) {
         return res.status(404).json({
-          message: `Product dengan id ${req.params.id} tidak ditemukan`
+          msg: `Product dengan id ${req.params.id} tidak ditemukan`
         })
     }
     res.status(200).json({
         status: 'success',
-        message: 'Produk Ditemukan',
+        msg: 'Produk Ditemukan',
         data: foundProduct
     })
 }
@@ -62,13 +62,13 @@ const createProduct = async (req, res) => {
         });
         res.status(201).json({
             status: 'success',
-            message: 'Produk berhasil ditambahkan',
+            msg: 'Produk berhasil ditambahkan',
             data: createdProduct
         });
     } catch (error) {
         return res.status(500).json({
           status: 'error',
-          message: err.message
+          msg: err.message
         })
     }
 }
@@ -91,18 +91,18 @@ const updateProduct = async (req, res) => {
       });
       if (!updatedProduct[0]) {
         return res.status(404).json({
-          message: `Product dengan id ${req.params.id} tidak ditemukan`
+          msg: `Product dengan id ${req.params.id} tidak ditemukan`
       })
       }
       res.status(200).json({ 
           status: 'success',
-          message: 'Produk berhasil diubah',
+          msg: 'Produk berhasil diubah',
           data: updatedProduct[1]
       })
   } catch(err){
     return res.status(500).json({
       status: 'error',
-      message: err.message
+      msg: err.message
     })
   }
 }
@@ -116,17 +116,17 @@ const deleteProduct = async (req, res) => {
       });
       if (!deletedProduct) {
         return res.status(404).json({
-          message: `Product dengan id ${req.params.id} tidak ditemukan`
+          msg: `Product dengan id ${req.params.id} tidak ditemukan`
       })
       }
       res.status(200).json({ 
           status: 'success',
-          message: 'Produk berhasil dihapus'
+          msg: 'Produk berhasil dihapus'
       })
   } catch(err){
     return res.status(500).json({
       status: 'error',
-      message: err.message
+      msg: err.message
     })
   }
 }
