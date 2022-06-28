@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     seller_id: DataTypes.INTEGER,
     buyer_id: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER,
-    offer_prince: DataTypes.INTEGER
+    offer_price: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Transaction',

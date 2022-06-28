@@ -8,7 +8,7 @@ module.exports = {
         seller_id: eachTransactionData.seller_id,
         buyer_id: eachTransactionData.buyer_id,
         product_id: eachTransactionData.product_id,
-        offer_prince: eachTransactionData.offer_prince,
+        offer_price: eachTransactionData.offer_price,
         createdAt: new Date(),
         updatedAt: new Date()
       }

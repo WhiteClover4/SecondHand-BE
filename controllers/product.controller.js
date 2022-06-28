@@ -1,4 +1,4 @@
-const { Product } = require('../models');
+const { Product, Transaction, Category, User } = require('../models');
 
 const getAllProducts = async (req, res) => {
     try {
@@ -34,7 +34,12 @@ const getAllProducts = async (req, res) => {
 }
 
 const getProductById = async (req, res) => {
-    const foundProduct = await Product.findByPk(req.params.id);
+    const foundProduct = await Product.findOne({
+        where: {
+            id: req.params.id
+        },
+        include: [Category, {model: Transaction, include: [User]}]
+    });
 
     if (!foundProduct) {
         return res.status(404).json({

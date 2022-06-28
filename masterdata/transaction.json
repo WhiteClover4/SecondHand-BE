@@ -2,13 +2,13 @@
     {
         "seller_id": 1,
         "buyer_id": 2,
-        "product_id": 3,
-        "offer_prince": 1
+        "product_id": 2,
+        "offer_price": 1
     },
     {
         "seller_id": 2,
         "buyer_id": 4,
         "product_id": 1,
-        "offer_prince": 2
+        "offer_price": 2
     }
 ]

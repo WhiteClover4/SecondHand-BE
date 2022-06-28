@@ -17,7 +17,7 @@ module.exports = {
       product_id: {
         type: Sequelize.INTEGER
       },
-      offer_prince: {
+      offer_price: {
         type: Sequelize.INTEGER
       },
       createdAt: {
