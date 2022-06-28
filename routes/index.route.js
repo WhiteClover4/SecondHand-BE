@@ -4,6 +4,7 @@ const userRoutes            = require('./user.route');
 const productRoutes         = require('./product.route');
 const productImageRoutes    = require('./productImage.route');
 const transactionRoutes     = require('./transaction.route');
+const notificationRoutes     = require('./notification.route');
 const authController        = require('../controllers/auth.controller');
 const homepageController    = require('../controllers/homepage.controller');
 const { createValidationFor, checkValidationResult } = require('../misc/validator');
@@ -20,5 +21,7 @@ router.use('/user', userRoutes);
 router.use('/product', productRoutes);
 router.use('/productImage', productImageRoutes);
 router.use('/transaction', transactionRoutes);
+router.use('/notification', notificationRoutes);
+
 
 module.exports = router;
