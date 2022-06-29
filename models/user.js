@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Transaction, {
         foreignKey: 'buyer_id'
       });
+      User.hasMany(models.Notification, {
+        foreignKey: 'user_id'
+      });
     }
   }
   User.init({
