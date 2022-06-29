@@ -1,4 +1,4 @@
-const {Product, Category} = require("../models");
+const {Product, Category, ProductImage} = require("../models");
 const { Op } = require("sequelize");
 
 const homepage = async (req, res) => {
@@ -6,7 +6,7 @@ const homepage = async (req, res) => {
         const {q, category} = req.query;
         
         const options = {
-            include: [Category]
+            include: [Category, ProductImage]
         }
 
         let categoryId;
