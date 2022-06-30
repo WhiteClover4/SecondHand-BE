@@ -1,5 +1,7 @@
 const cloudinary = require('cloudinary').v2;
 const fs         = require('fs');
+const asyncForEach = require('./asyncForEach');
+const {ProductImage}    = require('../models');
 
 cloudinary.config({
     cloud_name: 'dfhjxw9zd',
@@ -22,4 +24,30 @@ const uploadWithCloudinary = async (req, res, next) => {
     }
 };
 
-module.exports = uploadWithCloudinary;
+const uploadMultiCloudinary = async (files, productId) => {
+    try {
+        const folder = 'assets/${req.file.mimetype.split('/')[0]}';
+        const arrUploadResult = [];
+        await asyncForEach(files, async (file) => {
+            const uploadResult = await cloudinary.uploader.upload(file.path, {
+                folder: folder,
+                resource_type: "auto"
+            });
+            arrUploadResult.push({
+                product_id: productId,
+                product_pictures: uploadResult.secure_url
+            });
+            fs.unlinkSync(file.path);
+            console.log(file)
+        });
+
+        return ProductImage.bulkCreate(arrUploadResult);
+    } catch (error) {
+        files.forEach(file => {
+            fs.unlinkSync(file.path);
+        });
+        console.log(error);
+    }
+};
+
+module.exports = {uploadWithCloudinary, uploadMultiCloudinary};
