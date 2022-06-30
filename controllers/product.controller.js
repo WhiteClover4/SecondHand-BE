@@ -155,7 +155,7 @@ const getSellerProduct = async (req, res) => {
                 options.limit = row;
             }
         }
-
+ 
         const allProducts = await Product.findAll(options);
 
         res.status(200).json({
