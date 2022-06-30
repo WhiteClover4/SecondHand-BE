@@ -4,7 +4,8 @@ const userRoutes            = require('./user.route');
 const productRoutes         = require('./product.route');
 const productImageRoutes    = require('./productImage.route');
 const transactionRoutes     = require('./transaction.route');
-const notificationRoutes     = require('./notification.route');
+const notificationRoutes    = require('./notification.route');
+const sellerRoutes          = require('./seller.route');
 const authController        = require('../controllers/auth.controller');
 const homepageController    = require('../controllers/homepage.controller');
 const { createValidationFor, checkValidationResult } = require('../misc/validator');
@@ -19,9 +20,11 @@ router.post('/forget-password', createValidationFor('forget-password'), checkVal
 router.post('/reset-password', authController.resetPassword);
 router.use('/user', userRoutes);
 router.use('/product', productRoutes);
+router.use('/seller', sellerRoutes);
 router.use('/productImage', productImageRoutes);
 router.use('/transaction', transactionRoutes);
 router.use('/notification', notificationRoutes);
+
 
 
 module.exports = router;

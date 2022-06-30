@@ -1,4 +1,5 @@
 const { ProductImage }             = require('../models');
+const { uploadMultiCloudinary } = require('../misc/cloudinary');
 
 
 const getAllProductImages = async (req, res) => {
@@ -53,7 +54,8 @@ const getProductImageById = async (req, res) => {
 const createProductImage = async (req, res) => {
     try {
         const { product_id, product_pictures } = req.body;
-    
+        console.log(req.file);
+        console.log(req.files);
         const createdProductImage = await ProductImage.create({
             product_id: product_id,
             product_pictures: product_pictures
