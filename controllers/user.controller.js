@@ -4,7 +4,7 @@ const { User }             = require('../models');
 const getAllUsers = async (req, res) => {
     try {
         const options = {
-            attributes: ['name', 'email', 'password', 'city', 'address', 'phone_number', 'role_id', 'profile_picture' ],
+            attributes: ['name', 'email', 'password', 'city', 'address', 'phone_number', 'profile_picture' ],
         };
 
         if(req.query) {

@@ -12,7 +12,6 @@ const register = async (req, res) => {
             name: name,
             email: email,
             password: password,
-            role_id: 1,
             profile_picture: "https://www.kindpng.com/picc/m/21-214439_free-high-quality-person-icon-default-profile-picture.png"
         });
         const emailRes = await sendEmail(email, name);
@@ -44,8 +43,7 @@ const register = async (req, res) => {
         email: foundUser.email,
         city: foundUser.city,
         address: foundUser.address,
-        phone_number: foundUser.phone_number,
-        role_id: foundUser.role_id
+        phone_number: foundUser.phone_number
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: '1h'
