@@ -54,7 +54,7 @@ const getUserData = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
       const {name, city, address, phone_number, profile_picture} = req.body;
-      let id = req.params.id;
+      let id = req.user.id;
       if(!( await User.findByPk(id))) return res.status(404).json({
         status:"Error",
         msg:"User not found!"

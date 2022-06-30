@@ -7,7 +7,7 @@ const uploadWithCloudinary = require('../misc/cloudinary');
 
 router.get('/', userChecking, userController.getAllUsers);
 router.get('/data', userChecking, userController.getUserData);
-router.put('/:id', imageUpload.single('profile_picture'), uploadWithCloudinary, userController.updateUser);
+router.put('/', userChecking, imageUpload.single('profile_picture'), uploadWithCloudinary, userController.updateUser);
 router.delete('/:id', userController.deleteUser);
 
 module.exports = router;
