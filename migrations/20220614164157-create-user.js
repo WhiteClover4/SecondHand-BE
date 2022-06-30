@@ -29,9 +29,6 @@ module.exports = {
       phone_number: {
         type: Sequelize.STRING
       },
-      role_id: {
-        type: Sequelize.INTEGER
-      },
       profile_picture: {
         type: Sequelize.STRING
       },

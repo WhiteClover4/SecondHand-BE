@@ -5,8 +5,7 @@
         "password": "1",
         "city": "Jakarta",
         "address": "tanjung",
-        "phone_number": "087654321897",
-        "role_id": 1
+        "phone_number": "087654321897"
     },
     {
         "name": "Nur Rini Riani",
@@ -14,7 +13,6 @@
         "password": "2",
         "city": "Bandung",
         "address": "kringan",
-        "phone_number": "089532132175",
-        "role_id": 2
+        "phone_number": "089532132175"
     }
 ]
