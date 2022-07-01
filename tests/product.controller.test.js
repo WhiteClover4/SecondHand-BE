@@ -59,7 +59,7 @@ const productTest = () => {
                     'description': 'Ini hanyalah produk test',
                     'price': 123200,
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
             expect(res.statusCode).toEqual(201);
@@ -76,7 +76,7 @@ const productTest = () => {
                     'description': 'Ini hanyalah produk test',
                     'price': 123200,
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
             expect(res.statusCode).toEqual(422);
@@ -93,7 +93,7 @@ const productTest = () => {
                     'name': 'Produk Test',
                     'price': 123200,
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
             expect(res.statusCode).toEqual(422);
@@ -110,7 +110,7 @@ const productTest = () => {
                     'name': 'Produk Test',
                     'description': 'Ini hanyalah produk test',
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
             expect(res.statusCode).toEqual(422);
@@ -127,7 +127,7 @@ const productTest = () => {
                     'name': 'Produk Test',
                     'description': 'Ini hanyalah produk test',
                     'price': 123200,
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
             expect(res.statusCode).toEqual(422);
@@ -162,7 +162,7 @@ const productTest = () => {
                     'description': 'Ini hanyalah produk test',
                     'price': 123200,
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                 })
             expect(res.statusCode).toEqual(422);
             expect(res.body).toBeDefined();
@@ -179,7 +179,7 @@ const productTest = () => {
                     'description': 'Ini hanyalah produk test',
                     'price': 123200,
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
             expect(res.statusCode).toEqual(200);
@@ -197,7 +197,7 @@ const productTest = () => {
                     'description': 'Ini hanyalah produk test',
                     'price': 123200,
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
                 expect(res.statusCode).toEqual(404);
@@ -214,7 +214,7 @@ const productTest = () => {
                     'description': 'Ini hanyalah produk test',
                     'price': 123200,
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
             expect(res.statusCode).toEqual(422);
@@ -231,7 +231,7 @@ const productTest = () => {
                     'name': 'Produk Test',
                     'price': 123200,
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
             expect(res.statusCode).toEqual(422);
@@ -248,7 +248,7 @@ const productTest = () => {
                     'name': 'Produk Test',
                     'description': 'Ini hanyalah produk test',
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
             expect(res.statusCode).toEqual(422);
@@ -265,7 +265,7 @@ const productTest = () => {
                     'name': 'Produk Test',
                     'description': 'Ini hanyalah produk test',
                     'price': 123200,
-                    'category_id': 2,
+                    'category': "Hobi",
                     'isPublished': false
                 })
             expect(res.statusCode).toEqual(422);
@@ -300,7 +300,7 @@ const productTest = () => {
                     'description': 'Ini hanyalah produk test',
                     'price': 123200,
                     'status': "DRAFT",
-                    'category_id': 2,
+                    'category': "Hobi",
                 })
             expect(res.statusCode).toEqual(422);
             expect(res.body).toBeDefined();

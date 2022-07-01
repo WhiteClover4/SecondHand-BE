@@ -4,7 +4,7 @@
         "description": "Lorem",
         "price": 125000,
         "status": "DRAFT",
-        "category_id": 1,
+        "category": "Hobi",
         "isPublished": true
     },
     {
@@ -12,7 +12,7 @@
         "description": "Lorem",
         "price": 50000,
         "status": "REJECTED",
-        "category_id": 4,
+        "category": "Fashion",
         "isPublished": false
     }
 ]

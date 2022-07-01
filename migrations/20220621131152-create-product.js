@@ -21,8 +21,8 @@ module.exports = {
         type: Sequelize.ENUM,
         values: ['DRAFT', 'REJECTED', 'ACCEPTED', 'COMPLETED']
       },
-      category_id: {
-        type: Sequelize.INTEGER
+      category: {
+        type: Sequelize.STRING
       },
       isPublished: {
         type: Sequelize.BOOLEAN

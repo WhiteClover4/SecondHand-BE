@@ -11,9 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Product.belongsTo(models.Category, {
-        foreignKey: 'category_id'
-      });
       Product.hasMany(models.ProductImage, {
         foreignKey: 'product_id'
       });
@@ -32,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.ENUM({
       values: ['DRAFT', 'REJECTED', 'ACCEPTED', 'COMPLETED']
     }),
-    category_id: DataTypes.INTEGER,
+    category: DataTypes.STRING,
     isPublished: DataTypes.BOOLEAN
   }, {
     sequelize,

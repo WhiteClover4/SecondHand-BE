@@ -27,7 +27,7 @@ const createValidationFor = (route) => {
                 check('description').not().isEmpty().withMessage('description cant be null'),
                 check('price').not().isEmpty().withMessage('price cant be null'),
                 check('status').not().isEmpty().withMessage('status cant be null'),
-                check('category_id').not().isEmpty().withMessage('category cant be null'),
+                check('category').not().isEmpty().withMessage('category cant be null'),
                 check('isPublished').not().isEmpty().withMessage('is published cant be null')
         ];
         case 'update-product':
@@ -36,7 +36,7 @@ const createValidationFor = (route) => {
                 check('description').not().isEmpty().withMessage('description cant be null'),
                 check('price').not().isEmpty().withMessage('price cant be null'),
                 check('status').not().isEmpty().withMessage('status cant be null'),
-                check('category_id').not().isEmpty().withMessage('category cant be null'),
+                check('category').not().isEmpty().withMessage('category cant be null'),
                 check('isPublished').not().isEmpty().withMessage('is published cant be null')
         ];
         

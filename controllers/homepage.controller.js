@@ -9,27 +9,16 @@ const homepage = async (req, res) => {
             include: [Category, ProductImage]
         }
 
-        let categoryId;
-        if(category) {
-            categoryId = await Category.findOne({
-                where: {
-                    name: {
-                        [Op.iLike]: `%${category}%`
-                    }
-                }
-            });
-        }
-
         if(category && q) {
             options.where = {
                 name: {
                     [Op.iLike]: `%${q}%`
                 },
-                category_id: categoryId.id
+                category: category
             };
         } else if (category) {
             options.where = {
-                category_id: categoryId.id
+                category: category
             };
         } else if (q) {
             options.where = {

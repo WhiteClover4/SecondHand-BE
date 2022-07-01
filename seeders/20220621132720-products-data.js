@@ -9,7 +9,7 @@ module.exports = {
         description: eachProductData.description,
         price: eachProductData.price,
         status: eachProductData.status,
-        category_id: eachProductData.category_id,
+        category: eachProductData.category,
         isPublished: eachProductData.isPublished,
         createdAt: new Date(),
         updatedAt: new Date()

@@ -4,7 +4,7 @@ const {uploadMultiCloudinary} = require('../misc/cloudinary');
 const getAllProducts = async (req, res) => {
     try {
         const options = {
-            attributes: ['id', 'name', 'description', 'price', 'status', 'category_id', 'isPublished'],
+            attributes: ['id', 'name', 'description', 'price', 'status', 'category', 'isPublished'],
         };
         
         if(req.query) {
@@ -56,14 +56,14 @@ const getProductById = async (req, res) => {
 
 const createProduct = async (req, res) => {
     try {
-        const { name, description, price, status, category_id, isPublished } = req.body;
+        const { name, description, price, status, category, isPublished } = req.body;
     
         const createdProduct = await Product.create({
             name: name,
             description: description,
             price: price,
             status: status,
-            category_id: category_id,
+            category: category,
             isPublished: isPublished
         });
         res.status(201).json({
@@ -81,14 +81,14 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try{
-      const { name, description, price, status, category_id, isPublished } = req.body;
+      const { name, description, price, status, category, isPublished } = req.body;
     
       const updatedProduct = await Product.update({
             name:name,
             description:description,
             price:price,
             status:status,
-            category_id:category_id,
+            category:category,
             isPublished:isPublished
       }, {
         where: {
@@ -140,7 +140,7 @@ const deleteProduct = async (req, res) => {
 const getSellerProduct = async (req, res) => {
     try {
         const options = {
-            attributes: ['id', 'name', 'description', 'price', 'status', 'category_id', 'isPublished'],
+            attributes: ['id', 'name', 'description', 'price', 'status', 'category', 'isPublished'],
             include: [Category, ProductImage, {model: Transaction, where: {seller_id: req.user.id}}]
         };
         
@@ -173,7 +173,7 @@ const getSellerProduct = async (req, res) => {
 
 const createPreviewProduct = async (req, res) => {
     try {
-        const { name, description, price, category_id } = req.body;
+        const { name, description, price, category } = req.body;
     
         // add product
         const createdProduct = await Product.create({
@@ -181,7 +181,7 @@ const createPreviewProduct = async (req, res) => {
             description: description,
             price: price,
             status: "DRAFT",
-            category_id: category_id,
+            category: category,
             isPublished: false
         });
 
@@ -221,7 +221,7 @@ const createPreviewProduct = async (req, res) => {
 
 const createPublishProduct = async (req, res) => {
     try {
-        const { name, description, price, category_id } = req.body;
+        const { name, description, price, category } = req.body;
     
         // Add ke tabel product
         const createdProduct = await Product.create({
@@ -229,7 +229,7 @@ const createPublishProduct = async (req, res) => {
             description: description,
             price: price,
             status: "DRAFT",
-            category_id: category_id,
+            category: category,
             isPublished: true
         });
 
