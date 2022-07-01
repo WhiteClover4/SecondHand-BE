@@ -186,7 +186,9 @@ const createPreviewProduct = async (req, res) => {
         });
 
         // upload image to cloudinary
-        await uploadMultiCloudinary(req.files, createdProduct.id);
+        if(req.files) {
+            await uploadMultiCloudinary(req.files, createdProduct.id);
+        };
         const result = await Product.findOne({
             where: {
                 id: createdProduct.id
@@ -234,7 +236,9 @@ const createPublishProduct = async (req, res) => {
         });
 
         // Add ke tabel product image
-        await uploadMultiCloudinary(req.files, createdProduct.id);
+        if(req.files) { 
+            await uploadMultiCloudinary(req.files, createdProduct.id);
+        }
         const result = await Product.findOne({
             where: {
                 id: createdProduct.id

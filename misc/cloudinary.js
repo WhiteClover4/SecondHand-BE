@@ -1,7 +1,7 @@
 const cloudinary = require('cloudinary').v2;
-const fs         = require('fs');
+const fs = require('fs');
 const asyncForEach = require('./asyncForEach');
-const {ProductImage}    = require('../models');
+const { ProductImage } = require('../models');
 
 cloudinary.config({
     cloud_name: 'dfhjxw9zd',
@@ -10,10 +10,10 @@ cloudinary.config({
 });
 const uploadWithCloudinary = async (req, res, next) => {
     try {
-        if(!req.file) {
+        if (!req.file) {
             next();
         } else {
-            const folder = 'assets/${req.file.mimetype.split('/')[0]}';
+            const folder = 'assets/${req.file.mimetype.split(' / ')[0]}';
             const uploadResult = await cloudinary.uploader.upload(req.file.path, {
                 folder: folder,
                 resource_type: "auto"
@@ -30,26 +30,22 @@ const uploadWithCloudinary = async (req, res, next) => {
 
 const uploadMultiCloudinary = async (files, productId) => {
     try {
-        if(!files) {
-            next();
-        } else {
-            const folder = 'assets/${req.file.mimetype.split('/')[0]}';
-            const arrUploadResult = [];
-            await asyncForEach(files, async (file) => {
-                const uploadResult = await cloudinary.uploader.upload(file.path, {
-                    folder: folder,
-                    resource_type: "auto"
-                });
-                arrUploadResult.push({
-                    product_id: productId,
-                    product_pictures: uploadResult.secure_url
-                });
-                fs.unlinkSync(file.path);
-                console.log(file)
+        const folder = 'assets/${req.file.mimetype.split(' / ')[0]}';
+        const arrUploadResult = [];
+        await asyncForEach(files, async (file) => {
+            const uploadResult = await cloudinary.uploader.upload(file.path, {
+                folder: folder,
+                resource_type: "auto"
             });
-    
-            return ProductImage.bulkCreate(arrUploadResult);
-        }
+            arrUploadResult.push({
+                product_id: productId,
+                product_pictures: uploadResult.secure_url
+            });
+            fs.unlinkSync(file.path);
+            console.log(file)
+        });
+
+        return ProductImage.bulkCreate(arrUploadResult);
     } catch (error) {
         files.forEach(file => {
             fs.unlinkSync(file.path);
@@ -58,4 +54,4 @@ const uploadMultiCloudinary = async (files, productId) => {
     }
 };
 
-module.exports = {uploadWithCloudinary, uploadMultiCloudinary};
+module.exports = { uploadWithCloudinary, uploadMultiCloudinary };
