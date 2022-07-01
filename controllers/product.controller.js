@@ -1,5 +1,5 @@
-const { Product, Transaction, Category, User, ProductImage } = require('../models');
-const {uploadMultiCloudinary} = require('../misc/cloudinary');
+const { Product, Transaction, Category, User, ProductImage, Notification } = require('../models');
+const { uploadMultiCloudinary } = require('../misc/cloudinary');
 
 const getAllProducts = async (req, res) => {
     try {
