@@ -9,6 +9,7 @@ module.exports = {
         buyer_id: eachTransactionData.buyer_id,
         product_id: eachTransactionData.product_id,
         offer_price: eachTransactionData.offer_price,
+        status: eachTransactionData.status,
         createdAt: new Date(),
         updatedAt: new Date()
       }

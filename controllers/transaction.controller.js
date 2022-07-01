@@ -3,7 +3,7 @@ const { Transaction, Product } = require('../models');
 const getAllTransactions = async (req, res) => {
     try {
         const options = {
-            attributes: ['id', 'seller_id', 'buyer_id', 'product_id', 'offer_price'],
+            attributes: ['id', 'seller_id', 'buyer_id', 'product_id', 'offer_price', 'status'],
         };
 
         if (req.query) {
@@ -56,7 +56,8 @@ const createTransaction = async (req, res) => {
             seller_id: seller_id,
             buyer_id: buyer_id,
             product_id: product_id,
-            offer_price: offer_price
+            offer_price: offer_price,
+            status: null
         });
         res.status(201).json({
             status: 'success',
@@ -94,7 +95,8 @@ const updateTransaction = async (req, res) => {
                 seller_id: foundProduct.Transactions[0].seller_id,
                 buyer_id: req.user.id,
                 product_id: req.params.id,
-                offer_price: offer_price
+                offer_price: offer_price,
+                status: "OFFERED"
             });
 
             await Notification.create({

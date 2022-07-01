@@ -19,7 +19,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM,
-        values: ['DRAFT', 'REJECTED', 'ACCEPTED', 'COMPLETED']
+        values: ['DRAFT', 'CANCELED', 'COMPLETED']
       },
       category: {
         type: Sequelize.STRING

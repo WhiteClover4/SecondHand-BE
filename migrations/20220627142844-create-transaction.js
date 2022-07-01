@@ -20,6 +20,10 @@ module.exports = {
       offer_price: {
         type: Sequelize.INTEGER
       },
+      status: {
+        type: Sequelize.ENUM,
+        values: ['OFFERED', 'REJECTED', 'ACCEPTED']
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

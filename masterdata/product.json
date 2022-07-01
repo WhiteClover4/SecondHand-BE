@@ -11,7 +11,7 @@
         "name": "GLOWING SUN",
         "description": "Lorem",
         "price": 50000,
-        "status": "REJECTED",
+        "status": "DRAFT",
         "category": "Fashion",
         "isPublished": false
     }
