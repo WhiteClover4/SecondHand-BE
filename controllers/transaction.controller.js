@@ -97,11 +97,16 @@ const updateTransaction = async (req, res) => {
                 offer_price: offer_price
             });
 
+            await Notification.create({
+                user_id: foundProduct.Transactions[0].seller_id,
+                message: "Penawaran produk",
+            });
+
             res.status(200).json({
                 status: 'success',
                 msg: 'Harga tawarmu berhasil dikirim ke penjual',
                 data: createTransactionOffering
-            })
+            });
         } else {
             return res.status(422).json({
                 status: 'Error',

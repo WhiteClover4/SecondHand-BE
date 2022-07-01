@@ -175,6 +175,7 @@ const createPreviewProduct = async (req, res) => {
     try {
         const { name, description, price, category_id } = req.body;
     
+        // add product
         const createdProduct = await Product.create({
             name: name,
             description: description,
@@ -184,12 +185,26 @@ const createPreviewProduct = async (req, res) => {
             isPublished: false
         });
 
+        // upload image to cloudinary
         await uploadMultiCloudinary(req.files, createdProduct.id);
         const result = await Product.findOne({
             where: {
                 id: createdProduct.id
             },
             include: [ProductImage]
+        });
+
+        // Add ke tabel transaction
+        await Transaction.create({
+            product_id: result.id,
+            seller_id: req.user.id,
+        });
+
+        // Add ke tabel notification
+        await Notification.create({
+            product_id: result.id,
+            user_id: req.user.id,
+            message: "Berhasil diterbitkan",
         });
         res.status(201).json({
             status: 'success',
@@ -208,6 +223,7 @@ const createPublishProduct = async (req, res) => {
     try {
         const { name, description, price, category_id } = req.body;
     
+        // Add ke tabel product
         const createdProduct = await Product.create({
             name: name,
             description: description,
@@ -216,12 +232,27 @@ const createPublishProduct = async (req, res) => {
             category_id: category_id,
             isPublished: true
         });
+
+        // Add ke tabel product image
         await uploadMultiCloudinary(req.files, createdProduct.id);
         const result = await Product.findOne({
             where: {
                 id: createdProduct.id
             },
             include: [ProductImage]
+        });
+
+        // Add ke tabel transaction
+        await Transaction.create({
+            product_id: result.id,
+            seller_id: req.user.id,
+        });
+
+        // Add ke tabel notification
+        await Notification.create({
+            product_id: result.id,
+            user_id: req.user.id,
+            message: "Berhasil diterbitkan",
         });
         res.status(201).json({
             status: 'success',

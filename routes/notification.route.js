@@ -1,8 +1,9 @@
 const express        = require('express');
 const router         = express.Router();
 const notificationRoutes     = require('../controllers/notification.controller');
+const userChecking   = require('../misc/passport');
 
-router.get('/', notificationRoutes.getAllNotifications);
+router.get('/', userChecking, notificationRoutes.getAllNotifications);
 router.get('/:id', notificationRoutes.getNotificationById);
 router.post('/', notificationRoutes.createNotification);
 router.put('/:id', notificationRoutes.updateNotification);

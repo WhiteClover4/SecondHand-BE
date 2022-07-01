@@ -1,17 +1,21 @@
-const { Notification } = require('../models');
+const { Notification, Product, Transaction } = require('../models');
 
 const getAllNotifications = async (req, res) => {
     try {
         const options = {
             attributes: ['id', 'product_id', 'user_id', 'message'],
+            where: {
+                user_id: req.user.id
+            },
+            include: [Product, {model: Product, include: [Transaction]}]
         };
         
         if(req.query) {
             let { page, row } = req.query;
-    
+
             let pages = ((page - 1) * row);
-    
-    
+
+
             if (page && row) {
                 options.offset = pages;
                 options.limit = row;
@@ -51,12 +55,13 @@ const getNotificationById = async (req, res) => {
 const createNotification = async (req, res) => {
     try {
         const { product_id, user_id, message } = req.body;
-    
+
         const createdNotification = await Notification.create({
             product_id: product_id,
             user_id: user_id,
             message: message
         });
+
         res.status(201).json({
             status: 'success',
             msg: 'Notification berhasil ditambahkan',
