@@ -3,7 +3,7 @@ const { Notification, Product, Transaction } = require('../models');
 const getAllNotifications = async (req, res) => {
     try {
         const options = {
-            attributes: ['id', 'product_id', 'user_id', 'message'],
+            attributes: ['id', 'product_id', 'user_id', 'message', 'is_read'],
             where: {
                 user_id: req.user.id
             },
@@ -59,7 +59,8 @@ const createNotification = async (req, res) => {
         const createdNotification = await Notification.create({
             product_id: product_id,
             user_id: user_id,
-            message: message
+            message: message,
+            is_read: false
         });
 
         res.status(201).json({
@@ -82,7 +83,8 @@ const updateNotification = async (req, res) => {
       const updatedNotification = await Notification.update({
             product_id: product_id,
             user_id: user_id,
-            message: message
+            message: message,
+            is_read: true
       }, {
         where: {
           id: req.params.id
@@ -130,10 +132,38 @@ const deleteNotification = async (req, res) => {
   }
 }
 
+const updateReadNotification = async (req, res) => {
+    try {
+        const updatedNotification = await Notification.update({
+            is_read: true
+        }, {
+            where: {
+                id: req.params.id
+            }, returning: true
+        });
+        if (!updatedNotification[0]) {
+            return res.status(404).json({
+                msg: `Notification dengan id ${req.params.id} tidak ditemukan`
+            })
+        }
+        res.status(200).json({
+            status: 'success',
+            msg: 'Notification berhasil diubah',
+            data: updatedNotification[1]
+        })
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            msg: err.message
+        })
+    }
+};
+
 module.exports = {
   getAllNotifications,
   getNotificationById,
   createNotification,
   updateNotification,
-  deleteNotification
+  deleteNotification,
+  updateReadNotification
 }

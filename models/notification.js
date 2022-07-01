@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
   Notification.init({
     product_id: DataTypes.INTEGER,
     user_id: DataTypes.INTEGER,
-    message: DataTypes.STRING
+    message: DataTypes.STRING,
+    is_read: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Notification',
