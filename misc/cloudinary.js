@@ -10,14 +10,18 @@ cloudinary.config({
 });
 const uploadWithCloudinary = async (req, res, next) => {
     try {
-        const folder = 'assets/${req.file.mimetype.split('/')[0]}';
-        const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-            folder: folder,
-            resource_type: "auto"
-        });
-        fs.unlinkSync(req.file.path);
-        req.body.profile_picture = uploadResult.secure_url;
-        next();
+        if(!req.file) {
+            next();
+        } else {
+            const folder = 'assets/${req.file.mimetype.split('/')[0]}';
+            const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+                folder: folder,
+                resource_type: "auto"
+            });
+            fs.unlinkSync(req.file.path);
+            req.body.profile_picture = uploadResult.secure_url;
+            next();
+        }
     } catch (error) {
         fs.unlinkSync(req.file.path);
         console.log(error);
@@ -26,22 +30,26 @@ const uploadWithCloudinary = async (req, res, next) => {
 
 const uploadMultiCloudinary = async (files, productId) => {
     try {
-        const folder = 'assets/${req.file.mimetype.split('/')[0]}';
-        const arrUploadResult = [];
-        await asyncForEach(files, async (file) => {
-            const uploadResult = await cloudinary.uploader.upload(file.path, {
-                folder: folder,
-                resource_type: "auto"
+        if(!files) {
+            next();
+        } else {
+            const folder = 'assets/${req.file.mimetype.split('/')[0]}';
+            const arrUploadResult = [];
+            await asyncForEach(files, async (file) => {
+                const uploadResult = await cloudinary.uploader.upload(file.path, {
+                    folder: folder,
+                    resource_type: "auto"
+                });
+                arrUploadResult.push({
+                    product_id: productId,
+                    product_pictures: uploadResult.secure_url
+                });
+                fs.unlinkSync(file.path);
+                console.log(file)
             });
-            arrUploadResult.push({
-                product_id: productId,
-                product_pictures: uploadResult.secure_url
-            });
-            fs.unlinkSync(file.path);
-            console.log(file)
-        });
-
-        return ProductImage.bulkCreate(arrUploadResult);
+    
+            return ProductImage.bulkCreate(arrUploadResult);
+        }
     } catch (error) {
         files.forEach(file => {
             fs.unlinkSync(file.path);
