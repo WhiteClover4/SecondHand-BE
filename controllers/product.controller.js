@@ -39,7 +39,7 @@ const getProductById = async (req, res) => {
         where: {
             id: req.params.id
         },
-        include: [Category, {model: Transaction, include: [{model: User, as: 'seller'}]}]
+        include: [{model: Transaction, include: [{model: User, as: 'seller'}]}]
     });
 
     if (!foundProduct) {
@@ -141,7 +141,7 @@ const getSellerProduct = async (req, res) => {
     try {
         const options = {
             attributes: ['id', 'name', 'description', 'price', 'status', 'category', 'isPublished'],
-            include: [Category, ProductImage, {model: Transaction, where: {seller_id: req.user.id}}]
+            include: [ProductImage, {model: Transaction, where: {seller_id: req.user.id}}]
         };
         
         if(req.query) {
