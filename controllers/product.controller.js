@@ -39,8 +39,24 @@ const getProductById = async (req, res) => {
         where: {
             id: req.params.id
         },
-        include: [{model: Transaction, include: [{model: User, as: 'seller'}]}]
+        include: [ProductImage, {model: Transaction, include: [{model: User, as: 'seller'}]}]
     });
+
+    
+
+    const result = {
+        id: foundProduct.id,
+        name: foundProduct.name,
+        description: foundProduct.description,
+        price: foundProduct.price,
+        category: foundProduct.category,
+        product_images: foundProduct.ProductImages,
+        seller: {
+            name: foundProduct.Transactions[0].seller.name,
+            city: foundProduct.Transactions[0].seller.city,
+            profile_picture: foundProduct.Transactions[0].seller.profile_picture,
+        }
+    }
 
     if (!foundProduct) {
         return res.status(404).json({
@@ -50,7 +66,7 @@ const getProductById = async (req, res) => {
     res.status(200).json({
         status: 'success',
         msg: 'Produk Ditemukan',
-        data: foundProduct
+        data: result
     })
 }
 
