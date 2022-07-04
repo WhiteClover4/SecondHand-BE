@@ -6,6 +6,12 @@ const homepage = async (req, res) => {
         const {q, category} = req.query;
         
         const options = {
+            where: {
+                status: {
+                    [Op.not]: "COMPLETED"
+                },
+                isPublished: true
+            },
             include: [ProductImage]
         }
 
