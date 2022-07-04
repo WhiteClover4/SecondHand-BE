@@ -34,7 +34,20 @@ const homepage = async (req, res) => {
             };
         }
 
-        const result = await Product.findAll(options);
+        const products = await Product.findAll(options);
+        console.log(products);
+        const result = products.map((eachProduct) => {
+            return {
+                id: eachProduct.id,
+                name: eachProduct.name,
+                description: eachProduct.description,
+                price: eachProduct.price,
+                status: eachProduct.status,
+                category: eachProduct.category,
+                isPublished: eachProduct.isPublished,
+                ProductImage: eachProduct.ProductImages[0].product_pictures
+            }
+          })
 
         return res.status(200).json({
             status  : 'success',
