@@ -19,7 +19,7 @@ const uploadWithCloudinary = async (req, res, next) => {
                 resource_type: "auto"
             });
             fs.unlinkSync(req.file.path);
-            req.body.profile_picture = uploadResult.secure_url;
+            req.body.profile_picture = uploadResult.secure_url ? uploadResult.secure_url : null;
             next();
         }
     } catch (error) {
