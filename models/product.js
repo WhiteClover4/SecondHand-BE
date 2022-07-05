@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     price: DataTypes.INTEGER,
     status: DataTypes.ENUM({
-      values: ['DRAFT', 'REJECTED', 'ACCEPTED', 'COMPLETED']
+      values: ['DRAFT', 'CANCELED', 'COMPLETED']
     }),
     category: DataTypes.STRING,
     isPublished: DataTypes.BOOLEAN
