@@ -39,7 +39,24 @@ const createValidationFor = (route) => {
                 check('category').not().isEmpty().withMessage('category cant be null'),
                 check('isPublished').not().isEmpty().withMessage('is published cant be null')
         ];
-        
+        case 'create-buyer/transaction':
+            return [
+                check('offer_price').not().isEmpty().withMessage('offer_price cant be null')
+        ];
+        case 'update-seller/product/preview':
+            return [
+                check('name').not().isEmpty().withMessage('name cant be null'),
+                check('description').not().isEmpty().withMessage('description cant be null'),
+                check('price').not().isEmpty().withMessage('price cant be null'),
+                check('category').not().isEmpty().withMessage('category cant be null')
+        ];
+        case 'update-seller/product/publish':
+            return [
+                check('name').not().isEmpty().withMessage('name cant be null'),
+                check('description').not().isEmpty().withMessage('description cant be null'),
+                check('price').not().isEmpty().withMessage('price cant be null'),
+                check('category').not().isEmpty().withMessage('category cant be null')
+        ];
 
         default:
             return [];
