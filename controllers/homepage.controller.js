@@ -35,7 +35,6 @@ const homepage = async (req, res) => {
         }
 
         const products = await Product.findAll(options);
-        console.log(products);
         const result = products.map((eachProduct) => {
             return {
                 id: eachProduct.id,

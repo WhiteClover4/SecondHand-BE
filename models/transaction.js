@@ -30,7 +30,10 @@ module.exports = (sequelize, DataTypes) => {
     seller_id: DataTypes.INTEGER,
     buyer_id: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER,
-    offer_price: DataTypes.INTEGER
+    offer_price: DataTypes.INTEGER,
+    status: DataTypes.ENUM({
+        values: ['OFFERED', 'REJECTED', 'ACCEPTED']
+      }),
   }, {
     sequelize,
     modelName: 'Transaction',
