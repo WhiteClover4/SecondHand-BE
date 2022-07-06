@@ -6,13 +6,13 @@ const getAllProducts = async (req, res) => {
         const options = {
             attributes: ['id', 'name', 'description', 'price', 'status', 'category', 'isPublished'],
         };
-        
-        if(req.query) {
+
+        if (req.query) {
             let { page, row } = req.query;
-    
+
             let pages = ((page - 1) * row);
-    
-    
+
+
             if (page && row) {
                 options.offset = pages;
                 options.limit = row;
@@ -23,14 +23,14 @@ const getAllProducts = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            msg: 'Semua produk ditampilkan', 
+            msg: 'Semua produk ditampilkan',
             data: allProducts,
         });
     } catch (err) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
-        }) 
+            status: 'error',
+            msg: err.message
+        })
     }
 }
 
@@ -39,10 +39,10 @@ const getProductById = async (req, res) => {
         where: {
             id: req.params.id
         },
-        include: [ProductImage, {model: Transaction, include: [{model: User, as: 'seller'}]}]
+        include: [ProductImage, { model: Transaction, include: [{ model: User, as: 'seller' }] }]
     });
 
-    
+
 
     const result = {
         id: foundProduct.id,
@@ -60,7 +60,7 @@ const getProductById = async (req, res) => {
 
     if (!foundProduct) {
         return res.status(404).json({
-          msg: `Product dengan id ${req.params.id} tidak ditemukan`
+            msg: `Product dengan id ${req.params.id} tidak ditemukan`
         })
     }
     res.status(200).json({
@@ -73,7 +73,7 @@ const getProductById = async (req, res) => {
 const createProduct = async (req, res) => {
     try {
         const { name, description, price, status, category, isPublished } = req.body;
-    
+
         const createdProduct = await Product.create({
             name: name,
             description: description,
@@ -89,83 +89,87 @@ const createProduct = async (req, res) => {
         });
     } catch (error) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
+            status: 'error',
+            msg: err.message
         })
     }
 }
 
 const updateProduct = async (req, res) => {
-  try{
-      const { name, description, price, status, category, isPublished } = req.body;
-    
-      const updatedProduct = await Product.update({
-            name:name,
-            description:description,
-            price:price,
-            status:status,
-            category:category,
-            isPublished:isPublished
-      }, {
-        where: {
-          id: req.params.id
-        }, returning: true 
-      });
-      if (!updatedProduct[0]) {
-        return res.status(404).json({
-          msg: `Product dengan id ${req.params.id} tidak ditemukan`
-      })
-      }
-      res.status(200).json({ 
-          status: 'success',
-          msg: 'Produk berhasil diubah',
-          data: updatedProduct[1]
-      })
-  } catch(err){
-    return res.status(500).json({
-      status: 'error',
-      msg: err.message
-    })
-  }
+    try {
+        const { name, description, price, category } = req.body;
+
+        console.log(req.body);
+
+        const foundProduct = await Product.findOne({
+            where: {
+                id: req.params.id
+            }
+        });
+
+        if (!foundProduct) {
+            return res.status(404).json({
+                msg: `Product dengan id ${req.params.id} tidak ditemukan`
+            })
+        }
+
+        foundProduct.update({
+            name: name,
+            description: description,
+            price: price,
+            category: category
+        });
+
+        res.status(200).json({
+            status: 'success',
+            msg: 'Produk berhasil diubah',
+            data: foundProduct
+        })
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            msg: err.message
+        })
+    }
 }
 
 const deleteProduct = async (req, res) => {
-  try{
-      const deletedProduct = await Product.destroy({
-          where: {
-              id: req.params.id
-          }
-      });
-      if (!deletedProduct) {
-        return res.status(404).json({
-          msg: `Product dengan id ${req.params.id} tidak ditemukan`
-      })
-      }
-      res.status(200).json({ 
-          status: 'success',
-          msg: 'Produk berhasil dihapus'
-      })
-  } catch(err){
-    return res.status(500).json({
-      status: 'error',
-      msg: err.message
-    })
-  }
+    try {
+        const deletedProduct = await Product.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
+        if (!deletedProduct) {
+            return res.status(404).json({
+                msg: `Product dengan id ${req.params.id} tidak ditemukan`
+            })
+        }
+        res.status(200).json({
+            status: 'success',
+            msg: 'Produk berhasil dihapus'
+        })
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            msg: err.message
+        })
+    }
 }
 
 const getSellerProduct = async (req, res) => {
     try {
         const options = {
             attributes: ['id', 'name', 'description', 'price', 'status', 'category', 'isPublished'],
-            include: [ProductImage, {model: Transaction, where: {seller_id: req.user.id}}]
+            include: [ProductImage, { model: Transaction, where: { seller_id: req.user.id } }]
         };
-        
-        if(req.query) {
+
+        if (req.query) {
             let { page, row } = req.query;
-    
+
             let pages = ((page - 1) * row);
-    
-    
+
+
             if (page && row) {
                 options.offset = pages;
                 options.limit = row;
@@ -176,7 +180,7 @@ const getSellerProduct = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            msg: 'Semua produk ditampilkan', 
+            msg: 'Semua produk ditampilkan',
             data: allProducts,
         });
     } catch (err) {
@@ -190,7 +194,7 @@ const getSellerProduct = async (req, res) => {
 const createPreviewProduct = async (req, res) => {
     try {
         const { name, description, price, category } = req.body;
-    
+
         // add product
         const createdProduct = await Product.create({
             name: name,
@@ -202,7 +206,7 @@ const createPreviewProduct = async (req, res) => {
         });
 
         // upload image to cloudinary
-        if(req.files) {
+        if (req.files) {
             await uploadMultiCloudinary(req.files, createdProduct.id);
         };
         const result = await Product.findOne({
@@ -231,8 +235,8 @@ const createPreviewProduct = async (req, res) => {
         });
     } catch (err) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
+            status: 'error',
+            msg: err.message
         })
     }
 }
@@ -240,7 +244,7 @@ const createPreviewProduct = async (req, res) => {
 const createPublishProduct = async (req, res) => {
     try {
         const { name, description, price, category } = req.body;
-    
+
         // Add ke tabel product
         const createdProduct = await Product.create({
             name: name,
@@ -252,7 +256,7 @@ const createPublishProduct = async (req, res) => {
         });
 
         // Add ke tabel product image
-        if(req.files) { 
+        if (req.files) {
             await uploadMultiCloudinary(req.files, createdProduct.id);
         }
         const result = await Product.findOne({
@@ -281,8 +285,8 @@ const createPublishProduct = async (req, res) => {
         });
     } catch (err) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
+            status: 'error',
+            msg: err.message
         })
     }
 }
@@ -291,7 +295,7 @@ const publishProduct = async (req, res) => {
     try {
         const updatedProduct = await Product.update({
             isPublished: true
-        },{
+        }, {
             where: {
                 id: req.params.id
             }, returning: true
@@ -303,11 +307,14 @@ const publishProduct = async (req, res) => {
         });
     } catch (err) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
+            status: 'error',
+            msg: err.message
         })
     }
 }
+
+
+
 
 module.exports = {
     getAllProducts,

@@ -1,4 +1,4 @@
-const { Transaction, Product, User, ProductImage } = require('../models');
+const { Transaction, Product, User, ProductImage, Notification } = require('../models');
 const { Op } = require('sequelize');
 
 const getAllTransactions = async (req, res) => {

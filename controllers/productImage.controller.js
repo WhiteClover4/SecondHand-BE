@@ -53,17 +53,13 @@ const getProductImageById = async (req, res) => {
 
 const createProductImage = async (req, res) => {
     try {
-        const { product_id, product_pictures } = req.body;
-        console.log(req.file);
-        console.log(req.files);
-        const createdProductImage = await ProductImage.create({
-            product_id: product_id,
-            product_pictures: product_pictures
-        });
+        // Add ke tabel product image
+        if(req.files) { 
+            await uploadMultiCloudinary(req.files, req.params.id);
+        };
         res.status(201).json({
             status: 'success',
             msg: 'Gambar produk berhasil ditambahkan',
-            data: createdProductImage
         });
     } catch (error) {
         return res.status(500).json({

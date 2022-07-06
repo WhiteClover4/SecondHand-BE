@@ -15,23 +15,11 @@ const homepage = async (req, res) => {
             include: [ProductImage]
         }
 
-        if(category && q) {
-            options.where = {
-                name: {
-                    [Op.iLike]: `%${q}%`
-                },
-                category: category
-            };
-        } else if (category) {
-            options.where = {
-                category: category
-            };
-        } else if (q) {
-            options.where = {
-                name: {
-                    [Op.iLike]: `%${q}%`
-                }
-            };
+        if (category) {
+            options.where.category = category
+        }  
+        if (q) {
+            options.where.name = { [Op.iLike]: `%${q}%` }
         }
 
         const products = await Product.findAll(options);

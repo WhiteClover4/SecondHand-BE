@@ -8,6 +8,7 @@ const { checkPassword }    = require('../misc/auth')
 const register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
+        
         const createdUser = await User.create({
             name: name,
             email: email,
