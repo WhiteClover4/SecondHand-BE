@@ -35,6 +35,13 @@ const register = async (req, res) => {
         email: email
       }
     });
+
+    if (!foundUser) {
+        return res.status(404).json({
+            msg: `Email tidak terdaftar``,
+        })
+    }
+
     const isValidPassword = bcrypt.compareSync(password, foundUser.password);
     if (isValidPassword) {
       const payload = {
