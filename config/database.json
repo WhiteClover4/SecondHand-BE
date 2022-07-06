@@ -1,10 +1,11 @@
 {
   "development": {
     "username": "postgres",
-    "password": "nelydwia18",
+    "password": "1",
     "database": "secondHand",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "port": "5433"
 },
 "test": {
     "username": "postgres",

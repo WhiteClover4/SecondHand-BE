@@ -38,7 +38,7 @@ const register = async (req, res) => {
 
     if (!foundUser) {
         return res.status(404).json({
-            msg: `Email tidak terdaftar``,
+            msg: `Email tidak terdaftar`
         })
     }
 
