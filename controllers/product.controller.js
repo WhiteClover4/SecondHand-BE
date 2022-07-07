@@ -20,11 +20,25 @@ const getAllProducts = async (req, res) => {
         }
 
         const allProducts = await Product.findAll(options);
+        
+        const result = allProducts.map((eachProduct) => {
+            const image = eachProduct.ProductImages[0] ? eachProduct.ProductImages[0].product_pictures : null;
+            return {
+                id: eachProduct.id,
+                name: eachProduct.name,
+                description: eachProduct.description,
+                price: eachProduct.price,
+                status: eachProduct.status,
+                category: eachProduct.category,
+                isPublished: eachProduct.isPublished,
+                ProductImage: image
+            }
+          })
 
         res.status(200).json({
             status: 'success',
             msg: 'Semua produk ditampilkan',
-            data: allProducts,
+            data: result,
         });
     } catch (err) {
         return res.status(500).json({
@@ -178,10 +192,24 @@ const getSellerProduct = async (req, res) => {
 
         const allProducts = await Product.findAll(options);
 
+        const result = allProducts.map((eachProduct) => {
+            const image = eachProduct.ProductImages[0] ? eachProduct.ProductImages[0].product_pictures : null;
+            return {
+                id: eachProduct.id,
+                name: eachProduct.name,
+                description: eachProduct.description,
+                price: eachProduct.price,
+                status: eachProduct.status,
+                category: eachProduct.category,
+                isPublished: eachProduct.isPublished,
+                ProductImage: image
+            }
+          })
+
         res.status(200).json({
             status: 'success',
             msg: 'Semua produk ditampilkan',
-            data: allProducts,
+            data: result,
         });
     } catch (err) {
         return res.status(500).json({
