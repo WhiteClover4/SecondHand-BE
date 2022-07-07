@@ -64,6 +64,7 @@ const getProductById = async (req, res) => {
         description: foundProduct.description,
         price: foundProduct.price,
         category: foundProduct.category,
+        isPublished: foundProduct.isPublished,
         product_images: foundProduct.ProductImages,
         seller: {
             name: foundProduct.Transactions[0].seller.name,
