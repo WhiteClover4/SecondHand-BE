@@ -23,7 +23,10 @@ const homepage = async (req, res) => {
         }
 
         const products = await Product.findAll(options);
+        // console.log(products[0].ProductImages);
+        // const image =
         const result = products.map((eachProduct) => {
+            const image = eachProduct.ProductImages[0] ? eachProduct.ProductImages[0].product_pictures : null;
             return {
                 id: eachProduct.id,
                 name: eachProduct.name,
@@ -32,7 +35,7 @@ const homepage = async (req, res) => {
                 status: eachProduct.status,
                 category: eachProduct.category,
                 isPublished: eachProduct.isPublished,
-                ProductImage: eachProduct.ProductImages[0].product_pictures
+                ProductImage: image
             }
           })
 
