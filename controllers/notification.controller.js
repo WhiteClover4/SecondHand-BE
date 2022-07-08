@@ -1,4 +1,5 @@
-const { Notification, Product, Transaction } = require('../models');
+const { Notification, Product, Transaction, ProductImage } = require('../models');
+const moment = require('moment');
 
 const getAllNotifications = async (req, res) => {
     try {
@@ -7,10 +8,10 @@ const getAllNotifications = async (req, res) => {
             where: {
                 user_id: req.user.id
             },
-            include: [Product, {model: Product, include: [Transaction]}]
+            include: [Product, { model: Product, include: [ProductImage, Transaction] }]
         };
-        
-        if(req.query) {
+
+        if (req.query) {
             let { page, row } = req.query;
 
             let pages = ((page - 1) * row);
@@ -23,17 +24,31 @@ const getAllNotifications = async (req, res) => {
         }
 
         const allNotifications = await Notification.findAll(options);
+        const result = allNotifications.map((eachNotification) => {
+            const image = eachNotification.Product.ProductImages[0] ? eachNotification.Product.ProductImages[0].product_pictures : null;
+            const offer_price = eachNotification.Product.Transactions[0] ? eachNotification.Product.Transactions[0].offer_price : null;
+            return {
+                id: eachNotification.id,
+                message: eachNotification.message,
+                is_read: eachNotification.is_read,
+                product_name: eachNotification.Product.name,
+                product_price: eachNotification.Product.price,
+                product_offer_price: offer_price,
+                product_image: image,
+                date: moment(eachNotification.createdAt).locale("id").utc(7).format('Do MMM, h:mm'),
+            }
+        })
 
         res.status(200).json({
             status: 'success',
-            msg: 'Semua Notification ditampilkan', 
-            data: allNotifications,
+            msg: 'Semua Notification ditampilkan',
+            data: result,
         });
     } catch (err) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
-        }) 
+            status: 'error',
+            msg: err.message
+        })
     }
 }
 
@@ -42,7 +57,7 @@ const getNotificationById = async (req, res) => {
 
     if (!foundNotification) {
         return res.status(404).json({
-          msg: `Notification dengan id ${req.params.id} tidak ditemukan`
+            msg: `Notification dengan id ${req.params.id} tidak ditemukan`
         })
     }
     res.status(200).json({
@@ -70,66 +85,66 @@ const createNotification = async (req, res) => {
         });
     } catch (error) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
+            status: 'error',
+            msg: err.message
         })
     }
 }
 
 const updateNotification = async (req, res) => {
-  try{
-      const { product_id, user_id, message } = req.body;
-    
-      const updatedNotification = await Notification.update({
+    try {
+        const { product_id, user_id, message } = req.body;
+
+        const updatedNotification = await Notification.update({
             product_id: product_id,
             user_id: user_id,
             message: message,
             is_read: true
-      }, {
-        where: {
-          id: req.params.id
-        }, returning: true 
-      });
-      if (!updatedNotification[0]) {
-        return res.status(404).json({
-          msg: `Notification dengan id ${req.params.id} tidak ditemukan`
-      })
-      }
-      res.status(200).json({ 
-          status: 'success',
-          msg: 'Notification berhasil diubah',
-          data: updatedNotification[1]
-      })
-  } catch(err){
-    return res.status(500).json({
-      status: 'error',
-      msg: err.message
-    })
-  }
+        }, {
+            where: {
+                id: req.params.id
+            }, returning: true
+        });
+        if (!updatedNotification[0]) {
+            return res.status(404).json({
+                msg: `Notification dengan id ${req.params.id} tidak ditemukan`
+            })
+        }
+        res.status(200).json({
+            status: 'success',
+            msg: 'Notification berhasil diubah',
+            data: updatedNotification[1]
+        })
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            msg: err.message
+        })
+    }
 }
 
 const deleteNotification = async (req, res) => {
-  try{
-      const deletedNotification = await Notification.destroy({
-          where: {
-              id: req.params.id
-          }
-      });
-      if (!deletedNotification) {
-        return res.status(404).json({
-          msg: `Notification dengan id ${req.params.id} tidak ditemukan`
-      })
-      }
-      res.status(200).json({ 
-          status: 'success',
-          msg: 'Notification berhasil dihapus'
-      })
-  } catch(err){
-    return res.status(500).json({
-      status: 'error',
-      msg: err.message
-    })
-  }
+    try {
+        const deletedNotification = await Notification.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
+        if (!deletedNotification) {
+            return res.status(404).json({
+                msg: `Notification dengan id ${req.params.id} tidak ditemukan`
+            })
+        }
+        res.status(200).json({
+            status: 'success',
+            msg: 'Notification berhasil dihapus'
+        })
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            msg: err.message
+        })
+    }
 }
 
 const updateReadNotification = async (req, res) => {
@@ -160,10 +175,10 @@ const updateReadNotification = async (req, res) => {
 };
 
 module.exports = {
-  getAllNotifications,
-  getNotificationById,
-  createNotification,
-  updateNotification,
-  deleteNotification,
-  updateReadNotification
+    getAllNotifications,
+    getNotificationById,
+    createNotification,
+    updateNotification,
+    deleteNotification,
+    updateReadNotification
 }
