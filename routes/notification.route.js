@@ -8,6 +8,6 @@ router.get('/:id', notificationRoutes.getNotificationById);
 router.post('/', notificationRoutes.createNotification);
 router.put('/:id', notificationRoutes.updateNotification);
 router.delete('/:id', notificationRoutes.deleteNotification);
-router.put('/read/:id', notificationRoutes.updateReadNotification);
+router.put('/read/:id', userChecking, notificationRoutes.updateReadNotification);
 
 module.exports = router;

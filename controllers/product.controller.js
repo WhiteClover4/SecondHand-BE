@@ -1,5 +1,6 @@
-const { Product, Transaction, Category, User, ProductImage, Notification } = require('../models');
+const { Product, Transaction, User, ProductImage, Notification } = require('../models');
 const { uploadMultiCloudinary } = require('../misc/cloudinary');
+const userChecking = require('../misc/passport');
 
 const getAllProducts = async (req, res) => {
     try {
@@ -56,8 +57,6 @@ const getProductById = async (req, res) => {
         include: [ProductImage, { model: Transaction, include: [{ model: User, as: 'seller' }] }]
     });
 
-
-
     const result = {
         id: foundProduct.id,
         name: foundProduct.name,
@@ -71,6 +70,17 @@ const getProductById = async (req, res) => {
             city: foundProduct.Transactions[0].seller.city,
             profile_picture: foundProduct.Transactions[0].seller.profile_picture,
         }
+    }
+
+    if(req.headers.authorization) {
+        userChecking;
+        let isBuyed = false;
+        foundProduct.Transactions.forEach(async (eachTransaction) => {
+            if(eachTransaction.buyer_id == req.user.id){
+                isBuyed = true;
+            }
+        })
+        result.isBuyed = isBuyed;
     }
 
     if (!foundProduct) {
