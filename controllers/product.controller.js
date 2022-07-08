@@ -50,49 +50,56 @@ const getAllProducts = async (req, res) => {
 }
 
 const getProductById = async (req, res) => {
-    const foundProduct = await Product.findOne({
-        where: {
-            id: req.params.id
-        },
-        include: [ProductImage, { model: Transaction, include: [{ model: User, as: 'seller' }] }]
-    });
-
-    const result = {
-        id: foundProduct.id,
-        name: foundProduct.name,
-        description: foundProduct.description,
-        price: foundProduct.price,
-        category: foundProduct.category,
-        isPublished: foundProduct.isPublished,
-        product_images: foundProduct.ProductImages,
-        seller: {
-            name: foundProduct.Transactions[0].seller.name,
-            city: foundProduct.Transactions[0].seller.city,
-            profile_picture: foundProduct.Transactions[0].seller.profile_picture,
-        }
-    }
-
-    if(req.headers.authorization) {
-        userChecking;
-        let isBuyed = false;
-        foundProduct.Transactions.forEach(async (eachTransaction) => {
-            if(eachTransaction.buyer_id == req.user.id){
-                isBuyed = true;
+    try {
+        const foundProduct = await Product.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [ProductImage, { model: Transaction, include: [{ model: User, as: 'seller' }] }]
+        });
+    
+        const result = {
+            id: foundProduct.id,
+            name: foundProduct.name,
+            description: foundProduct.description,
+            price: foundProduct.price,
+            category: foundProduct.category,
+            isPublished: foundProduct.isPublished,
+            product_images: foundProduct.ProductImages,
+            seller: {
+                name: foundProduct.Transactions[0].seller.name,
+                city: foundProduct.Transactions[0].seller.city,
+                profile_picture: foundProduct.Transactions[0].seller.profile_picture,
             }
+        }
+    
+        if(req.headers.authorization) {
+            userChecking;
+            let isBuyed = false;
+            foundProduct.Transactions.forEach(async (eachTransaction) => {
+                if(eachTransaction.buyer_id == req.user.id){
+                    isBuyed = true;
+                }
+            })
+            result.isBuyed = isBuyed;
+        }
+    
+        if (!foundProduct) {
+            return res.status(404).json({
+                msg: `Product dengan id ${req.params.id} tidak ditemukan`
+            })
+        }
+        res.status(200).json({
+            status: 'success',
+            msg: 'Produk Ditemukan',
+            data: result
         })
-        result.isBuyed = isBuyed;
-    }
-
-    if (!foundProduct) {
-        return res.status(404).json({
-            msg: `Product dengan id ${req.params.id} tidak ditemukan`
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            msg: err.message
         })
     }
-    res.status(200).json({
-        status: 'success',
-        msg: 'Produk Ditemukan',
-        data: result
-    })
 }
 
 const createProduct = async (req, res) => {
