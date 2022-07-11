@@ -1,5 +1,6 @@
 const { Transaction, Product, User, ProductImage, Notification } = require('../models');
 const { Op } = require('sequelize');
+const moment = require('moment');
 
 const getAllTransactions = async (req, res) => {
     try {
@@ -256,20 +257,22 @@ const getDetailTransaction = async (req, res) => {
             where: {
                 id: req.params.id
             },
-            include: [Product, {model: User, as: 'buyer'}]
+            include: [{model: Product, include: [ProductImage]}, {model: User, as: 'buyer'}]
         });
 
+        const image = foundTransaction.Product.ProductImages[0] ? foundTransaction.Product.ProductImages[0].product_pictures : null;
         const result = {
             id: foundTransaction.id,
             buyer_name: foundTransaction.buyer.name,
             buyer_city: foundTransaction.buyer.city,
             buyer_profile_picture: foundTransaction.buyer.profile_picture,
-            buyer_phone: foundTransaction.buyer.phone,
+            buyer_phone_number: foundTransaction.buyer.phone_number,
             product_name: foundTransaction.Product.name,
             product_price: foundTransaction.Product.price,
             product_offer: foundTransaction.offer_price,
+            product_pictures: image,
             status: foundTransaction.status,
-            date: foundTransaction.createdAt,
+            date: moment(foundTransaction.createdAt).locale("id").utc(7).format('Do MMM, h:mm')
         };
 
         // console.log(foundTransaction);

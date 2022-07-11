@@ -5,9 +5,9 @@ const getAllNotifications = async (req, res) => {
     try {
         const options = {
             attributes: ['id', 'product_id', 'user_id', 'message', 'is_read'],
-            where: {
-                user_id: req.user.id
-            },
+            // where: {
+            //     user_id: req.user.id
+            // },
             include: [Product, { model: Product, include: [ProductImage, Transaction] }]
         };
 
