@@ -268,6 +268,7 @@ const getDetailTransaction = async (req, res) => {
             product_name: foundTransaction.Product.name,
             product_price: foundTransaction.Product.price,
             product_offer: foundTransaction.offer_price,
+            status: foundTransaction.status,
             date: foundTransaction.createdAt,
         };
 
