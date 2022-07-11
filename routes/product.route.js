@@ -5,7 +5,7 @@ const { createValidationFor, checkValidationResult } = require('../misc/validato
 const userChecking = require('../misc/passport');
 
 router.get('/', productRoutes.getAllProducts);
-router.get('/:id', userChecking, productRoutes.getProductById);
+router.get('/:id', productRoutes.getProductById);
 router.post('/', createValidationFor("create-product"), checkValidationResult, productRoutes.createProduct);
 router.put('/:id', createValidationFor("update-product"), checkValidationResult,  productRoutes.updateProduct);
 router.delete('/:id',  productRoutes.deleteProduct);
