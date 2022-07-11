@@ -26,15 +26,18 @@ const getAllNotifications = async (req, res) => {
         const allNotifications = await Notification.findAll(options);
         const result = allNotifications.map((eachNotification) => {
             const image = eachNotification.Product.ProductImages[0] ? eachNotification.Product.ProductImages[0].product_pictures : null;
+            const t_id = eachNotification.Product.Transactions[0] ? eachNotification.Product.Transactions[0].id : null;
             const offer_price = eachNotification.Product.Transactions[0] ? eachNotification.Product.Transactions[0].offer_price : null;
             return {
                 id: eachNotification.id,
                 message: eachNotification.message,
                 is_read: eachNotification.is_read,
+                product_id: eachNotification.product_id,
                 product_name: eachNotification.Product.name,
                 product_price: eachNotification.Product.price,
                 product_offer_price: offer_price,
                 product_image: image,
+                transaction_id: t_id,
                 date: moment(eachNotification.createdAt).locale("id").utc(7).format('Do MMM, h:mm'),
             }
         })
