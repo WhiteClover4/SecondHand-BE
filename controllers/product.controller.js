@@ -73,10 +73,10 @@ const getProductById = async (req, res) => {
             }
         }
     
-        if(req.headers.authorization) {
+        if(req.user) {
             let isBuyed = false;
-            foundProduct.Transactions.forEach(async (eachTransaction) => {
-                if(eachTransaction.buyer_id == req.user.id){
+            foundProduct.Transactions.forEach((eachTransaction) => {
+                if(eachTransaction.buyer_id === req.user.id){
                     isBuyed = true;
                 }
             })

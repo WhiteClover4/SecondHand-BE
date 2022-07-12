@@ -1,4 +1,5 @@
 const passport = require('passport');
+const AnonymousStrategy = require('passport-anonymous').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
 const opts = {};
@@ -18,5 +19,9 @@ passport.use(
             .catch((err) => done(err, false));
     })
 );
+passport.use(new AnonymousStrategy());
 
-module.exports = passport.authenticate('jwt', { session: false });
+const authenticate = passport.authenticate('jwt', { session: false });
+const optionalAuthenticate = passport.authenticate(['jwt', 'anonymous'], { session: false });
+
+module.exports = { authenticate, optionalAuthenticate };
