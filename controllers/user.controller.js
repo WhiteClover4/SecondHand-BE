@@ -38,10 +38,14 @@ const getAllUsers = async (req, res) => {
 const getUserData = async (req, res) => {
     try {
         console.log(req);
+        const foundUser = await User.findByPk(req.user.id, {
+            attributes: ['name', 'city', 'address', 'phone_number', 'profile_picture' ],
+        });
+        const
         return res.status(200).json({
             status: "success",
             msg: "User berhasil ditemukan",
-            data: req.user
+            data: foundUser
         })
     } catch (err) {
         return res.status(500).json({
