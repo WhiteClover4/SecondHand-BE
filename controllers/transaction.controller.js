@@ -411,6 +411,9 @@ const updateStatusTransaction = async (req, res) => {
         res.status(200).json({
             status: 'success',
             msg: 'Status transaksi berhasil dirubah',
+            data: {
+                isCompleted: req.body.isCompleted
+            }
         })
     } catch (error) {
         return res.status(500).json({
