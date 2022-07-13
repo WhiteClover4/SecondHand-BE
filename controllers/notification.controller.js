@@ -4,11 +4,11 @@ const moment = require('moment');
 const getAllNotifications = async (req, res) => {
     try {
         const options = {
-            attributes: ['id', 'product_id', 'user_id', 'message', 'is_read'],
-            where: {
-                user_id: req.user.id
-            },
-            include: [Product, { model: Product, include: [ProductImage, Transaction] }]
+            attributes: ['id', 'transaction_id', 'user_id', 'message', 'role', 'is_read'],
+            // where: {
+            //     user_id: req.user.id
+            // },
+            include: [{model: Transaction, include: [{ model: Product, include: [ProductImage] }]}]
         };
 
         if (req.query) {
@@ -25,19 +25,19 @@ const getAllNotifications = async (req, res) => {
 
         const allNotifications = await Notification.findAll(options);
         const result = allNotifications.map((eachNotification) => {
-            const image = eachNotification.Product.ProductImages[0] ? eachNotification.Product.ProductImages[0].product_pictures : null;
-            const t_id = eachNotification.Product.Transactions[0] ? eachNotification.Product.Transactions[0].id : null;
-            const offer_price = eachNotification.Product.Transactions[0] ? eachNotification.Product.Transactions[0].offer_price : null;
+            const image = eachNotification.Transaction.Product.ProductImages[0] ? eachNotification.Transaction.Product.ProductImages[0].product_pictures : null;
             return {
                 id: eachNotification.id,
                 message: eachNotification.message,
                 is_read: eachNotification.is_read,
-                product_id: eachNotification.product_id,
-                product_name: eachNotification.Product.name,
-                product_price: eachNotification.Product.price,
-                product_offer_price: offer_price,
+                role: eachNotification.role,
+                product_id: eachNotification.Transaction.product_id,
+                product_name: eachNotification.Transaction.Product.name,
+                product_price: eachNotification.Transaction.Product.price,
+                product_offer_price: eachNotification.Transaction.offer_price,
                 product_image: image,
-                transaction_id: t_id,
+                transaction_id: eachNotification.Transaction.id,
+                transaction_status: eachNotification.Transaction.status,
                 date: moment(eachNotification.createdAt).locale("id").utc(7).format('Do MMM, h:mm'),
             }
         })

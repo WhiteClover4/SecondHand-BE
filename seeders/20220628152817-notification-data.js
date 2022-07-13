@@ -5,7 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     const dataNotificationsToBeSeeded = notificationData.map((eachNotificationData) => {
       return {
-        product_id: eachNotificationData.product_id,
+        transaction_id: eachNotificationData.transaction_id,
         user_id: eachNotificationData.user_id,
         message: eachNotificationData.message,
         createdAt: new Date(),

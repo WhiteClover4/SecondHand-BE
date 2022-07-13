@@ -1,14 +1,16 @@
 [
     {
-        "product_id": 1,
+        "transaction_id": 1,
         "user_id": 2,
         "message": "penawaran produk",
-        "is_read": false
+        "is_read": false,
+        "role": "seller"
     },
     {
-        "product_id": 3,
+        "transaction_id": 3,
         "user_id": 4,
         "message": "berhasil di terbitkan",
-        "is_read": false
+        "is_read": false,
+        "role": "seller"
     }
 ]

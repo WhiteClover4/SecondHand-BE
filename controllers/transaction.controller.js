@@ -102,8 +102,17 @@ const updateTransaction = async (req, res) => {
             });
 
             await Notification.create({
-                user_id: foundProduct.Transactions[0].seller_id,
+                transaction_id: createTransactionOffering.id,
+                user_id: createTransactionOffering.seller_id,
                 message: "Penawaran produk",
+                role: "seller"
+            });
+
+            await Notification.create({
+                transaction_id: createTransactionOffering.id,
+                user_id: createTransactionOffering.buyer_id,
+                message: "Penawaran produk",
+                role: "buyer"
             });
 
             res.status(200).json({
@@ -359,6 +368,13 @@ const updateAcceptTransaction = async (req, res) => {
 
         const updatedTransaction = await foundTransaction.update({
             status: "ACCEPTED"
+        });
+
+        await Notification.create({
+            transaction_id: foundTransaction.id,
+            user_id: foundTransaction.buyer_id,
+            message: "Penawaran produk",
+            role: "buyer"
         });
 
         if (!updatedTransaction) {

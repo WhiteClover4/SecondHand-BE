@@ -24,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
       Transaction.belongsTo(models.Product,{
         foreignKey: 'product_id'
       });
+      Transaction.hasMany(models.Notification, {
+        foreignKey: 'transaction_id'
+      });
     }
   }
   Transaction.init({
