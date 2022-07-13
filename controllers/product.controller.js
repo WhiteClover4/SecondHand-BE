@@ -324,6 +324,7 @@ const createPublishProduct = async (req, res) => {
             transaction_id: transaction.id,
             user_id: req.user.id,
             message: "Berhasil diterbitkan",
+            role: "seller"
         });
         res.status(201).json({
             status: 'success',
