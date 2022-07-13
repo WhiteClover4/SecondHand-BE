@@ -314,14 +314,14 @@ const createPublishProduct = async (req, res) => {
         });
 
         // Add ke tabel transaction
-        await Transaction.create({
+        const transaction = await Transaction.create({
             product_id: result.id,
             seller_id: req.user.id,
         });
 
         // Add ke tabel notification
         await Notification.create({
-            product_id: result.id,
+            transaction_id: transaction.id,
             user_id: req.user.id,
             message: "Berhasil diterbitkan",
         });
