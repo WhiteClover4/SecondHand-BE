@@ -319,7 +319,7 @@ const getStatusTransaction = async (req, res) => {
             })
         }
         const result = {
-            isCompleted: foundTransaction.Product.status === "COMPLETED" ? true : false,
+            isCompleted: foundTransaction.Product.status === "COMPLETED" ? "true" : null,
         };
 
         res.status(200).json({
