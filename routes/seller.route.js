@@ -8,11 +8,8 @@ const { createValidationFor, checkValidationResult } = require('../misc/validato
 
 router.get('/', authenticate, productController.getSellerProduct);
 router.get('/product/:id', authenticate, productController.getProductById);
-// PUT product/:id
 router.put('/product/:id', authenticate, productController.updateProduct);
-// POST product/image
 router.post('/product/image/:id', imageUpload.array('product_pictures', 4), authenticate, productImageController.createProductImage);
-// DELETE product/image/:id
 router.delete('/product/image/:id', authenticate, productImageController.deleteProductImage);
 router.post('/product/preview', imageUpload.array('product_pictures', 4), createValidationFor('update-seller/product/preview'), checkValidationResult, authenticate, productController.createPreviewProduct);
 router.post('/product/publish', imageUpload.array('product_pictures', 4), createValidationFor('update-seller/product/publish'), checkValidationResult, authenticate, productController.createPublishProduct);

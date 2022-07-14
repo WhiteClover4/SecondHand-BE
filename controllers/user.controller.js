@@ -1,40 +1,5 @@
 const { User }             = require('../models');
 
-
-const getAllUsers = async (req, res) => {
-    try {
-        const options = {
-            attributes: ['name', 'email', 'password', 'city', 'address', 'phone_number', 'profile_picture' ],
-        };
-
-        if(req.query) {
-            let { page, row } = req.query;
-    
-            let pages = ((page - 1) * row);
-    
-    
-            if (page && row) {
-                options.offset = pages;
-                options.limit = row;
-            }
-        }
-
-
-        const allUsers = await User.findAll(options);
-
-        return res.status(200).json({
-            status: 'success',
-            msg: 'Semua user ditampilkan',
-            data: allUsers,
-        });
-    } catch (error) {
-        return res.status(500).json({
-          status: 'error',
-          msg: err.message
-        }) 
-    }
-}
-
 const getUserData = async (req, res) => {
     try {
         const foundUser = await User.findByPk(req.user.id, {
@@ -89,33 +54,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
-  try{
-      const deletedUser = await User.destroy({
-          where: {
-              id: req.params.id
-          }
-      });
-      if (!deletedUser) {
-        return res.status(404).json({
-          msg: `User dengan id ${req.params.id} tidak ditemukan`
-      })
-      }
-      res.status(200).json({ 
-          status: 'success',
-          msg: 'User berhasil dihapus'
-      })
-  } catch(err){
-    return res.status(500).json({
-      status: 'error',
-      msg: err.message
-    })
-  }
-}
-
 module.exports = {
-    getAllUsers,
     getUserData,
-    updateUser,
-    deleteUser
+    updateUser
   }

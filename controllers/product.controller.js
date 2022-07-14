@@ -2,53 +2,6 @@ const { Product, Transaction, User, ProductImage, Notification } = require('../m
 const { uploadMultiCloudinary } = require('../misc/cloudinary');
 
 
-const getAllProducts = async (req, res) => {
-    try {
-        const options = {
-            attributes: ['id', 'name', 'description', 'price', 'status', 'category', 'isPublished'],
-        };
-
-        if (req.query) {
-            let { page, row } = req.query;
-
-            let pages = ((page - 1) * row);
-
-
-            if (page && row) {
-                options.offset = pages;
-                options.limit = row;
-            }
-        }
-
-        const allProducts = await Product.findAll(options);
-        
-        const result = allProducts.map((eachProduct) => {
-            const image = eachProduct.ProductImages[0] ? eachProduct.ProductImages[0].product_pictures : null;
-            return {
-                id: eachProduct.id,
-                name: eachProduct.name,
-                description: eachProduct.description,
-                price: eachProduct.price,
-                status: eachProduct.status,
-                category: eachProduct.category,
-                isPublished: eachProduct.isPublished,
-                ProductImage: image
-            }
-          })
-
-        res.status(200).json({
-            status: 'success',
-            msg: 'Semua produk ditampilkan',
-            data: result,
-        });
-    } catch (err) {
-        return res.status(500).json({
-            status: 'error',
-            msg: err.message
-        })
-    }
-}
-
 const getProductById = async (req, res) => {
     try {
         const foundProduct = await Product.findOne({
@@ -102,36 +55,9 @@ const getProductById = async (req, res) => {
 
 }
 
-const createProduct = async (req, res) => {
-    try {
-        const { name, description, price, status, category, isPublished } = req.body;
-
-        const createdProduct = await Product.create({
-            name: name,
-            description: description,
-            price: price,
-            status: status,
-            category: category,
-            isPublished: isPublished
-        });
-        res.status(201).json({
-            status: 'success',
-            msg: 'Produk berhasil ditambahkan',
-            data: createdProduct
-        });
-    } catch (error) {
-        return res.status(500).json({
-            status: 'error',
-            msg: err.message
-        })
-    }
-}
-
 const updateProduct = async (req, res) => {
     try {
         const { name, description, price, category } = req.body;
-
-        console.log(req.body);
 
         const foundProduct = await Product.findOne({
             where: {
@@ -156,30 +82,6 @@ const updateProduct = async (req, res) => {
             status: 'success',
             msg: 'Produk berhasil diubah',
             data: foundProduct
-        })
-    } catch (err) {
-        return res.status(500).json({
-            status: 'error',
-            msg: err.message
-        })
-    }
-}
-
-const deleteProduct = async (req, res) => {
-    try {
-        const deletedProduct = await Product.destroy({
-            where: {
-                id: req.params.id
-            }
-        });
-        if (!deletedProduct) {
-            return res.status(404).json({
-                msg: `Product dengan id ${req.params.id} tidak ditemukan`
-            })
-        }
-        res.status(200).json({
-            status: 'success',
-            msg: 'Produk berhasil dihapus'
         })
     } catch (err) {
         return res.status(500).json({
@@ -365,11 +267,8 @@ const publishProduct = async (req, res) => {
 
 
 module.exports = {
-    getAllProducts,
     getProductById,
-    createProduct,
     updateProduct,
-    deleteProduct,
     getSellerProduct,
     createPreviewProduct,
     createPublishProduct,
