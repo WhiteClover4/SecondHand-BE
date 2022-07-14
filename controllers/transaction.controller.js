@@ -304,6 +304,37 @@ const getDetailTransaction = async (req, res) => {
     }
 };
 
+const getStatusTransaction = async (req, res) => {
+    try {
+        const foundTransaction = await Transaction.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [Product]
+        });
+
+        if (!foundTransaction) {
+            return res.status(404).json({
+                msg: `Status transaction dengan id ${req.params.id} tidak ditemukan`
+            })
+        }
+        const result = {
+            isCompleted: foundTransaction.Product.status === "COMPLETED" ? true : false,
+        };
+
+        res.status(200).json({
+            status: 'success',
+            msg: 'Status Transaction Ditemukan',
+            data: result
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status: 'error',
+            msg: error.message
+        })
+    }
+}
+
 const updateRejectTransaction = async (req, res) => {
     try {
         const foundTransaction = await Transaction.findOne({
@@ -448,6 +479,7 @@ module.exports = {
     getAllWishlist,
     getHistoryTransaction,
     getDetailTransaction,
+    getStatusTransaction,
     updateRejectTransaction,
     updateAcceptTransaction,
     updateStatusTransaction
