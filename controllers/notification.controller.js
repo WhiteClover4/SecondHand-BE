@@ -8,6 +8,9 @@ const getAllNotifications = async (req, res) => {
             where: {
                 user_id: req.user.id
             },
+            order: [
+                ['created_at', 'DESC']
+            ],
             include: [{model: Transaction, include: [{ model: Product, include: [ProductImage] }]}]
         };
 
