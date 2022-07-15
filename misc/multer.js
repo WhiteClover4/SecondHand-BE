@@ -17,13 +17,13 @@ const imageUpload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
       let ext = path.extname(file.originalname);
-      console.log(ext);
+    //   console.log(ext);
       if (ext === '.png' ||  ext === '.jpg' || ext === '.jpeg' || ext === '.mp4') return cb(null, true);
       cb(null, false);
       cb(new Error('Wrong filetype'));
   },
   limits: {
-      fileSize: 100000000
+      fileSize: 2000000
   }
 })
 
