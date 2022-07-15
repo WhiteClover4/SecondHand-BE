@@ -97,7 +97,7 @@ const getAllWishlist = async (req, res) => {
                 status: eachWishlist.status,
                 category: eachWishlist.category,
                 isPublished: eachWishlist.isPublished,
-                ProductImage: eachWishlist.ProductImages[0].product_pictures
+                ProductImage: eachWishlist.ProductImages[0].product_pictures ?? null 
             }
           })
 
@@ -151,7 +151,7 @@ const getHistoryTransaction = async (req, res) => {
                 status: eachHistory.status,
                 category: eachHistory.category,
                 isPublished: eachHistory.isPublished,
-                ProductImage: eachHistory.ProductImages[0].product_pictures
+                ProductImage: eachHistory.ProductImages[0].product_pictures ?? null
             }
           })
 
