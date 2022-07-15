@@ -8,7 +8,18 @@ const { checkPassword }    = require('../misc/auth')
 const register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        
+        const foundUser = await User.findOne({
+          where: {
+            email: email
+          }
+        });
+    
+        if (foundUser) {
+            return res.status(404).json({
+                status: 'Failed',
+                msg: `Email already registered`
+            })
+        }
         const createdUser = await User.create({
             name: name,
             email: email,
