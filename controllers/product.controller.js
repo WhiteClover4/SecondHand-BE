@@ -1,171 +1,109 @@
-const { Product, Transaction, Category, User, ProductImage, Notification } = require('../models');
+const { Product, Transaction, User, ProductImage, Notification } = require('../models');
 const { uploadMultiCloudinary } = require('../misc/cloudinary');
 
-const getAllProducts = async (req, res) => {
-    try {
-        const options = {
-            attributes: ['id', 'name', 'description', 'price', 'status', 'category', 'isPublished'],
-        };
-        
-        if(req.query) {
-            let { page, row } = req.query;
-    
-            let pages = ((page - 1) * row);
-    
-    
-            if (page && row) {
-                options.offset = pages;
-                options.limit = row;
-            }
-        }
-
-        const allProducts = await Product.findAll(options);
-
-        res.status(200).json({
-            status: 'success',
-            msg: 'Semua produk ditampilkan', 
-            data: allProducts,
-        });
-    } catch (err) {
-        return res.status(500).json({
-          status: 'error',
-          msg: err.message
-        }) 
-    }
-}
 
 const getProductById = async (req, res) => {
-    const foundProduct = await Product.findOne({
-        where: {
-            id: req.params.id
-        },
-        include: [ProductImage, {model: Transaction, include: [{model: User, as: 'seller'}]}]
-    });
-
-    
-
-    const result = {
-        id: foundProduct.id,
-        name: foundProduct.name,
-        description: foundProduct.description,
-        price: foundProduct.price,
-        category: foundProduct.category,
-        product_images: foundProduct.ProductImages,
-        seller: {
-            name: foundProduct.Transactions[0].seller.name,
-            city: foundProduct.Transactions[0].seller.city,
-            profile_picture: foundProduct.Transactions[0].seller.profile_picture,
-        }
-    }
-
-    if (!foundProduct) {
-        return res.status(404).json({
-          msg: `Product dengan id ${req.params.id} tidak ditemukan`
-        })
-    }
-    res.status(200).json({
-        status: 'success',
-        msg: 'Produk Ditemukan',
-        data: result
-    })
-}
-
-const createProduct = async (req, res) => {
     try {
-        const { name, description, price, status, category, isPublished } = req.body;
+        const foundProduct = await Product.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [ProductImage, { model: Transaction, include: [{ model: User, as: 'seller' }] }]
+        });
     
-        const createdProduct = await Product.create({
-            name: name,
-            description: description,
-            price: price,
-            status: status,
-            category: category,
-            isPublished: isPublished
-        });
-        res.status(201).json({
+        const result = {
+            id: foundProduct.id,
+            name: foundProduct.name,
+            description: foundProduct.description,
+            price: foundProduct.price,
+            category: foundProduct.category,
+            isPublished: foundProduct.isPublished,
+            product_images: foundProduct.ProductImages,
+            seller: {
+                name: foundProduct.Transactions[0].seller.name,
+                city: foundProduct.Transactions[0].seller.city,
+                profile_picture: foundProduct.Transactions[0].seller.profile_picture,
+            }
+        }
+    
+        if(req.user) {
+            let isBuyed = false;
+            foundProduct.Transactions.forEach((eachTransaction) => {
+                if(eachTransaction.buyer_id === req.user.id){
+                    isBuyed = true;
+                }
+            })
+            result.isBuyed = isBuyed;
+        }
+    
+        if (!foundProduct) {
+            return res.status(404).json({
+                msg: `Product dengan id ${req.params.id} tidak ditemukan`
+            })
+        }
+        res.status(200).json({
             status: 'success',
-            msg: 'Produk berhasil ditambahkan',
-            data: createdProduct
-        });
-    } catch (error) {
+            msg: 'Produk Ditemukan',
+            data: result
+        })
+    } catch (err) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
+            status: 'error',
+            msg: err.message
         })
     }
+
 }
 
 const updateProduct = async (req, res) => {
-  try{
-      const { name, description, price, status, category, isPublished } = req.body;
-    
-      const updatedProduct = await Product.update({
-            name:name,
-            description:description,
-            price:price,
-            status:status,
-            category:category,
-            isPublished:isPublished
-      }, {
-        where: {
-          id: req.params.id
-        }, returning: true 
-      });
-      if (!updatedProduct[0]) {
-        return res.status(404).json({
-          msg: `Product dengan id ${req.params.id} tidak ditemukan`
-      })
-      }
-      res.status(200).json({ 
-          status: 'success',
-          msg: 'Produk berhasil diubah',
-          data: updatedProduct[1]
-      })
-  } catch(err){
-    return res.status(500).json({
-      status: 'error',
-      msg: err.message
-    })
-  }
-}
+    try {
+        const { name, description, price, category } = req.body;
 
-const deleteProduct = async (req, res) => {
-  try{
-      const deletedProduct = await Product.destroy({
-          where: {
-              id: req.params.id
-          }
-      });
-      if (!deletedProduct) {
-        return res.status(404).json({
-          msg: `Product dengan id ${req.params.id} tidak ditemukan`
-      })
-      }
-      res.status(200).json({ 
-          status: 'success',
-          msg: 'Produk berhasil dihapus'
-      })
-  } catch(err){
-    return res.status(500).json({
-      status: 'error',
-      msg: err.message
-    })
-  }
+        const foundProduct = await Product.findOne({
+            where: {
+                id: req.params.id
+            }
+        });
+
+        if (!foundProduct) {
+            return res.status(404).json({
+                msg: `Product dengan id ${req.params.id} tidak ditemukan`
+            })
+        }
+
+        foundProduct.update({
+            name: name,
+            description: description,
+            price: price,
+            category: category
+        });
+
+        res.status(200).json({
+            status: 'success',
+            msg: 'Produk berhasil diubah',
+            data: foundProduct
+        })
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            msg: err.message
+        })
+    }
 }
 
 const getSellerProduct = async (req, res) => {
     try {
         const options = {
             attributes: ['id', 'name', 'description', 'price', 'status', 'category', 'isPublished'],
-            include: [ProductImage, {model: Transaction, where: {seller_id: req.user.id}}]
+            include: [ProductImage, { model: Transaction, where: { seller_id: req.user.id } }]
         };
-        
-        if(req.query) {
+
+        if (req.query) {
             let { page, row } = req.query;
-    
+
             let pages = ((page - 1) * row);
-    
-    
+
+
             if (page && row) {
                 options.offset = pages;
                 options.limit = row;
@@ -174,10 +112,24 @@ const getSellerProduct = async (req, res) => {
 
         const allProducts = await Product.findAll(options);
 
+        const result = allProducts.map((eachProduct) => {
+            const image = eachProduct.ProductImages[0] ? eachProduct.ProductImages[0].product_pictures : null;
+            return {
+                id: eachProduct.id,
+                name: eachProduct.name,
+                description: eachProduct.description,
+                price: eachProduct.price,
+                status: eachProduct.status,
+                category: eachProduct.category,
+                isPublished: eachProduct.isPublished,
+                ProductImage: image
+            }
+          })
+
         res.status(200).json({
             status: 'success',
-            msg: 'Semua produk ditampilkan', 
-            data: allProducts,
+            msg: 'Semua produk ditampilkan',
+            data: result,
         });
     } catch (err) {
         return res.status(500).json({
@@ -190,7 +142,7 @@ const getSellerProduct = async (req, res) => {
 const createPreviewProduct = async (req, res) => {
     try {
         const { name, description, price, category } = req.body;
-    
+
         // add product
         const createdProduct = await Product.create({
             name: name,
@@ -202,7 +154,7 @@ const createPreviewProduct = async (req, res) => {
         });
 
         // upload image to cloudinary
-        if(req.files) {
+        if (req.files) {
             await uploadMultiCloudinary(req.files, createdProduct.id);
         };
         const result = await Product.findOne({
@@ -213,16 +165,17 @@ const createPreviewProduct = async (req, res) => {
         });
 
         // Add ke tabel transaction
-        await Transaction.create({
+        const transaction = await Transaction.create({
             product_id: result.id,
             seller_id: req.user.id,
         });
 
         // Add ke tabel notification
         await Notification.create({
-            product_id: result.id,
+            transaction_id: transaction.id,
             user_id: req.user.id,
             message: "Berhasil diterbitkan",
+            role: "seller"
         });
         res.status(201).json({
             status: 'success',
@@ -231,8 +184,8 @@ const createPreviewProduct = async (req, res) => {
         });
     } catch (err) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
+            status: 'error',
+            msg: err.message
         })
     }
 }
@@ -240,7 +193,7 @@ const createPreviewProduct = async (req, res) => {
 const createPublishProduct = async (req, res) => {
     try {
         const { name, description, price, category } = req.body;
-    
+
         // Add ke tabel product
         const createdProduct = await Product.create({
             name: name,
@@ -252,7 +205,7 @@ const createPublishProduct = async (req, res) => {
         });
 
         // Add ke tabel product image
-        if(req.files) { 
+        if (req.files) {
             await uploadMultiCloudinary(req.files, createdProduct.id);
         }
         const result = await Product.findOne({
@@ -263,16 +216,17 @@ const createPublishProduct = async (req, res) => {
         });
 
         // Add ke tabel transaction
-        await Transaction.create({
+        const transaction = await Transaction.create({
             product_id: result.id,
             seller_id: req.user.id,
         });
 
         // Add ke tabel notification
         await Notification.create({
-            product_id: result.id,
+            transaction_id: transaction.id,
             user_id: req.user.id,
             message: "Berhasil diterbitkan",
+            role: "seller"
         });
         res.status(201).json({
             status: 'success',
@@ -281,8 +235,8 @@ const createPublishProduct = async (req, res) => {
         });
     } catch (err) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
+            status: 'error',
+            msg: err.message
         })
     }
 }
@@ -291,7 +245,7 @@ const publishProduct = async (req, res) => {
     try {
         const updatedProduct = await Product.update({
             isPublished: true
-        },{
+        }, {
             where: {
                 id: req.params.id
             }, returning: true
@@ -303,18 +257,18 @@ const publishProduct = async (req, res) => {
         });
     } catch (err) {
         return res.status(500).json({
-          status: 'error',
-          msg: err.message
+            status: 'error',
+            msg: err.message
         })
     }
 }
 
+
+
+
 module.exports = {
-    getAllProducts,
     getProductById,
-    createProduct,
     updateProduct,
-    deleteProduct,
     getSellerProduct,
     createPreviewProduct,
     createPublishProduct,

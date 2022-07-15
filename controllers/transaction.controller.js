@@ -1,77 +1,7 @@
-const { Transaction, Product, User, ProductImage } = require('../models');
+const { Transaction, Product, User, ProductImage, Notification } = require('../models');
 const { Op } = require('sequelize');
+const moment = require('moment');
 
-const getAllTransactions = async (req, res) => {
-    try {
-        const options = {
-            attributes: ['id', 'seller_id', 'buyer_id', 'product_id', 'offer_price', 'status'],
-        };
-
-        if (req.query) {
-            let { page, row } = req.query;
-
-            let pages = ((page - 1) * row);
-
-
-            if (page && row) {
-                options.offset = pages;
-                options.limit = row;
-            }
-        }
-
-        const allTransactions = await Transaction.findAll(options);
-
-        res.status(200).json({
-            status: 'success',
-            msg: 'Semua Transaction ditampilkan',
-            data: allTransactions,
-        });
-    } catch (err) {
-        return res.status(500).json({
-            status: 'error',
-            msg: err.message
-        })
-    }
-}
-
-// const getTransactionById = async (req, res) => {
-//     const foundTransaction = await Transaction.findByPk(req.params.id);
-
-//     if (!foundTransaction) {
-//         return res.status(404).json({
-//             msg: `Transaction dengan id ${req.params.id} tidak ditemukan`
-//         })
-//     }
-//     res.status(200).json({
-//         status: 'success',
-//         msg: 'Transaction Ditemukan',
-//         data: foundTransaction
-//     })
-// }
-
-const createTransaction = async (req, res) => {
-    try {
-        const { seller_id, buyer_id, product_id, offer_price } = req.body;
-
-        const createdTransaction = await Transaction.create({
-            seller_id: seller_id,
-            buyer_id: buyer_id,
-            product_id: product_id,
-            offer_price: offer_price,
-            status: null
-        });
-        res.status(201).json({
-            status: 'success',
-            msg: 'Transaction berhasil ditambahkan',
-            data: createdTransaction
-        });
-    } catch (error) {
-        return res.status(500).json({
-            status: 'error',
-            msg: err.message
-        })
-    }
-}
 
 const updateTransaction = async (req, res) => {
     try {
@@ -101,8 +31,17 @@ const updateTransaction = async (req, res) => {
             });
 
             await Notification.create({
-                user_id: foundProduct.Transactions[0].seller_id,
+                transaction_id: createTransactionOffering.id,
+                user_id: createTransactionOffering.seller_id,
                 message: "Penawaran produk",
+                role: "seller"
+            });
+
+            await Notification.create({
+                transaction_id: createTransactionOffering.id,
+                user_id: createTransactionOffering.buyer_id,
+                message: "Penawaran produk",
+                role: "buyer"
             });
 
             res.status(200).json({
@@ -124,35 +63,14 @@ const updateTransaction = async (req, res) => {
     }
 }
 
-const deleteTransaction = async (req, res) => {
-    try {
-        const deletedTransaction = await Transaction.destroy({
-            where: {
-                id: req.params.id
-            }
-        });
-        if (!deletedTransaction) {
-            return res.status(404).json({
-                msg: `Transaction dengan id ${req.params.id} tidak ditemukan`
-            })
-        }
-        res.status(200).json({
-            status: 'success',
-            msg: 'Transaction berhasil dihapus'
-        })
-    } catch (err) {
-        return res.status(500).json({
-            status: 'error',
-            msg: err.message
-        })
-    }
-}
-
 const getAllWishlist = async (req, res) => {
     try {
         const options = {
             attributes: ['id', 'name', 'description', 'price', 'status', 'category', 'isPublished'],
-            include: [ProductImage, {model: Transaction, where: {seller_id: req.user.id, status: "OFFERED"}, include: [{model: User, as: 'seller'}]}]
+            include: [ProductImage, {model: Transaction, where: {seller_id: req.user.id, [Op.or]: [
+                { status: "OFFERED" },
+                { status: "ACCEPTED" },
+            ]}, include: [{model: User, as: 'seller'}]}]
         };
 
         if (req.query) {
@@ -256,22 +174,23 @@ const getDetailTransaction = async (req, res) => {
             where: {
                 id: req.params.id
             },
-            include: [Product, {model: User, as: 'buyer'}]
+            include: [{model: Product, include: [ProductImage]}, {model: User, as: 'buyer'}]
         });
 
+        const image = foundTransaction.Product.ProductImages[0] ? foundTransaction.Product.ProductImages[0].product_pictures : null;
         const result = {
             id: foundTransaction.id,
             buyer_name: foundTransaction.buyer.name,
             buyer_city: foundTransaction.buyer.city,
             buyer_profile_picture: foundTransaction.buyer.profile_picture,
-            buyer_phone: foundTransaction.buyer.phone,
+            buyer_phone_number: foundTransaction.buyer.phone_number,
             product_name: foundTransaction.Product.name,
             product_price: foundTransaction.Product.price,
             product_offer: foundTransaction.offer_price,
-            date: foundTransaction.createdAt,
+            product_pictures: image,
+            status: foundTransaction.status,
+            date: moment(foundTransaction.createdAt).locale("id").utc(7).format('Do MMM, h:mm')
         };
-
-        // console.log(foundTransaction);
 
         if (!foundTransaction) {
             return res.status(404).json({
@@ -290,6 +209,37 @@ const getDetailTransaction = async (req, res) => {
         })
     }
 };
+
+const getStatusTransaction = async (req, res) => {
+    try {
+        const foundTransaction = await Transaction.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [Product]
+        });
+
+        if (!foundTransaction) {
+            return res.status(404).json({
+                msg: `Status transaction dengan id ${req.params.id} tidak ditemukan`
+            })
+        }
+        const result = {
+            isCompleted: foundTransaction.Product.status === "COMPLETED" ? "true" : null,
+        };
+
+        res.status(200).json({
+            status: 'success',
+            msg: 'Status Transaction Ditemukan',
+            data: result
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status: 'error',
+            msg: error.message
+        })
+    }
+}
 
 const updateRejectTransaction = async (req, res) => {
     try {
@@ -357,6 +307,13 @@ const updateAcceptTransaction = async (req, res) => {
             status: "ACCEPTED"
         });
 
+        await Notification.create({
+            transaction_id: foundTransaction.id,
+            user_id: foundTransaction.buyer_id,
+            message: "Penawaran produk",
+            role: "buyer"
+        });
+
         if (!updatedTransaction) {
             return res.status(404).json({
                 msg: `Transaction dengan id ${req.params.id} tidak ditemukan`
@@ -407,6 +364,9 @@ const updateStatusTransaction = async (req, res) => {
         res.status(200).json({
             status: 'success',
             msg: 'Status transaksi berhasil dirubah',
+            data: {
+                isCompleted: req.body.isCompleted
+            }
         })
     } catch (error) {
         return res.status(500).json({
@@ -417,14 +377,11 @@ const updateStatusTransaction = async (req, res) => {
 };
 
 module.exports = {
-    getAllTransactions,
-    // getTransactionById,
-    createTransaction,
     updateTransaction,
-    deleteTransaction,
     getAllWishlist,
     getHistoryTransaction,
     getDetailTransaction,
+    getStatusTransaction,
     updateRejectTransaction,
     updateAcceptTransaction,
     updateStatusTransaction

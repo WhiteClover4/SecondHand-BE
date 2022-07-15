@@ -8,13 +8,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      product_id: {
+      transaction_id: {
         type: Sequelize.INTEGER
       },
       user_id: {
         type: Sequelize.INTEGER
       },
       message: {
+        type: Sequelize.STRING
+      },
+      role: {
         type: Sequelize.STRING
       },
       is_read: {

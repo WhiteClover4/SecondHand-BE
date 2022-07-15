@@ -1,10 +1,10 @@
-const {Product, ProductImage} = require("../models");
+const { Product, ProductImage } = require("../models");
 const { Op } = require("sequelize");
 
 const homepage = async (req, res) => {
     try {
-        const {q, category} = req.query;
-        
+        const { q, category } = req.query;
+
         const options = {
             where: {
                 status: {
@@ -15,27 +15,17 @@ const homepage = async (req, res) => {
             include: [ProductImage]
         }
 
-        if(category && q) {
-            options.where = {
-                name: {
-                    [Op.iLike]: `%${q}%`
-                },
-                category: category
-            };
-        } else if (category) {
-            options.where = {
-                category: category
-            };
-        } else if (q) {
-            options.where = {
-                name: {
-                    [Op.iLike]: `%${q}%`
-                }
-            };
+        if (category) {
+            options.where.category = category
+        }
+        if (q) {
+            options.where.name = { [Op.iLike]: `%${q}%` }
         }
 
         const products = await Product.findAll(options);
+
         const result = products.map((eachProduct) => {
+            const image = eachProduct.ProductImages[0] ? eachProduct.ProductImages[0].product_pictures : null;
             return {
                 id: eachProduct.id,
                 name: eachProduct.name,
@@ -44,20 +34,20 @@ const homepage = async (req, res) => {
                 status: eachProduct.status,
                 category: eachProduct.category,
                 isPublished: eachProduct.isPublished,
-                ProductImage: eachProduct.ProductImages[0].product_pictures
+                ProductImage: image
             }
-          })
+        })
 
         return res.status(200).json({
-            status  : 'success',
-            msg     : 'homepage',
-            data    : result 
+            status: 'success',
+            msg: 'homepage',
+            data: result
         });
     } catch (err) {
         return res.status(500).json({
-            status  : 'error',
-            msg     : err.message
-          }) 
+            status: 'error',
+            msg: err.message
+        })
     }
 };
 

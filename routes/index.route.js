@@ -15,9 +15,6 @@ router.get('/', homepageController);
 
 router.post('/register', createValidationFor('register'), checkValidationResult, authController.register);
 router.post('/login', createValidationFor("login"), checkValidationResult, authController.login);
-router.post('/send-email', authController.sendToEmail);
-router.post('/forget-password', createValidationFor('forget-password'), checkValidationResult, authController.forgetPassword);
-router.post('/reset-password', authController.resetPassword);
 router.use('/user', userRoutes);
 router.use('/product', productRoutes);
 router.use('/seller', sellerRoutes);
