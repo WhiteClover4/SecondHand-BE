@@ -15,11 +15,11 @@
     "port": "5433"
   },
   "production": {
-    "username": "oyqfdpsfykotsq",
-    "password": "2a12df3d75f7a55d4f087e2c562ab757a3ed9c696c71d4425dab122b78371a86",
-    "database": "d5o5j3ql0l4uv0",
-    "host": "ec2-3-224-8-189.compute-1.amazonaws.com",
-    "url": "postgres://oyqfdpsfykotsq:2a12df3d75f7a55d4f087e2c562ab757a3ed9c696c71d4425dab122b78371a86@ec2-3-224-8-189.compute-1.amazonaws.com:5432/d5o5j3ql0l4uv0",
+    "username": "cxaqwzrzpshpvw",
+    "password": "8f67accca7b594e876de3b0e4cd99a0e51e8d03bc90e156dce4633841122db3f",
+    "database": "d4lfva0fouvcd",
+    "host": "ec2-54-161-255-125.compute-1.amazonaws.com",
+    "url": "postgres://cxaqwzrzpshpvw:8f67accca7b594e876de3b0e4cd99a0e51e8d03bc90e156dce4633841122db3f@ec2-54-161-255-125.compute-1.amazonaws.com:5432/d4lfva0fouvcd",
     "dialect": "postgres",
     "dialectOptions": {
         "ssl": {
