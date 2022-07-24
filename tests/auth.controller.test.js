@@ -136,28 +136,6 @@ const authTest = () => {
             expect(res.body.errors[0].msg).toEqual("password cant be null");
         });
     });
-    
-    describe('Forget Password API', () => { 
-        it('should send otp for forget password users', async () => {
-            const res = await request(app)
-                .post('/api/forget-password')
-                .set('Content-Type', 'application/json')
-                .send({
-                    email: 'test@mail.com',
-                })
-            expect(res.statusCode).toEqual(200);
-            expect(res.body).toHaveProperty('message');
-        });
-    
-        it('throw forget password error, email is null', async () => {
-            const res = await request(app)
-                .post('/api/forget-password')
-                .set('Content-Type', 'application/json')
-            expect(res.statusCode).toEqual(422);
-            expect(res.body).toBeDefined();
-            expect(res.body.errors[0].msg).toEqual("email cant be null");
-        });
-     })
 
 }
 
