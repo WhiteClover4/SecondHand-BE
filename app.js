@@ -5,7 +5,7 @@ const app         = express();
 const logger      = require('morgan');
 const cors        = require('cors');
 
-app.use(cors({ origin: ["http://localhost:3000", "https://secondhand-binar-staging.herokuapp.com", "https://secondhand-binar.vercel.app"] }));
+app.use(cors({ origin: ["http://localhost:3000", "http://secondhand-be-production.up.railway.app", "http://secondhand-sh.vercel.app"] }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
